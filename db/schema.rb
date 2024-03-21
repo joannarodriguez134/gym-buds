@@ -10,7 +10,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema[7.0].define(version: 2024_03_21_180612) do
+ActiveRecord::Schema[7.0].define(version: 2024_03_21_182616) do
   # These are extensions that must be enabled in order to support this database
   enable_extension "citext"
   enable_extension "plpgsql"
@@ -23,6 +23,18 @@ ActiveRecord::Schema[7.0].define(version: 2024_03_21_180612) do
     t.datetime "updated_at", null: false
     t.index ["approver_id"], name: "index_matches_on_approver_id"
     t.index ["requester_id"], name: "index_matches_on_requester_id"
+  end
+
+  create_table "messages", force: :cascade do |t|
+    t.text "body"
+    t.bigint "match_id", null: false
+    t.bigint "sender_id", null: false
+    t.bigint "receiver_id", null: false
+    t.datetime "created_at", null: false
+    t.datetime "updated_at", null: false
+    t.index ["match_id"], name: "index_messages_on_match_id"
+    t.index ["receiver_id"], name: "index_messages_on_receiver_id"
+    t.index ["sender_id"], name: "index_messages_on_sender_id"
   end
 
   create_table "users", force: :cascade do |t|
@@ -50,4 +62,7 @@ ActiveRecord::Schema[7.0].define(version: 2024_03_21_180612) do
 
   add_foreign_key "matches", "users", column: "approver_id"
   add_foreign_key "matches", "users", column: "requester_id"
+  add_foreign_key "messages", "matches"
+  add_foreign_key "messages", "users", column: "receiver_id"
+  add_foreign_key "messages", "users", column: "sender_id"
 end

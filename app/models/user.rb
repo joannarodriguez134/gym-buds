@@ -39,6 +39,11 @@ class User < ApplicationRecord
    # when the user is the one who approves the match request
    has_many :approved_matches, class_name: 'Match', foreign_key: 'approver_id'
 
+   has_many :sent_messages, class_name: 'Message', foreign_key: 'sender_id'
+   
+  has_many :received_messages, class_name: 'Message', foreign_key: 'receiver_id'
+
+
   # Enums
   enum gender: { male: 'male', female: 'female', nonbinary: 'nonbinary' }
 
@@ -82,7 +87,7 @@ class User < ApplicationRecord
       east_bank_club: 'east_bank_club',
       esporta_Fitness: 'esporta_fitness', 
       equinox: 'equinox',
-      la_fitness: 'la_Fitness',
+      la_fitness: 'la_fitness',
       planet_fitness: 'planet_fitness',
       fitness_formula_club: 'fitness_formula_club',
       midtown_athletic_club: 'midtown_athletic_club',
