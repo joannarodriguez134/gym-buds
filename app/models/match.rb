@@ -25,5 +25,34 @@ class Match < ApplicationRecord
 
   has_many :messages
 
-  enum status: { pending: 'pending', accepted: 'accepted', declined: 'declined' }
+  enum status: { pending: 'pending', accepted: 'accepted', rejected: 'rejected' }
+
+  validate :valid_status_transition, on: :update
+
+
+  # Scopes
+  scope :pending, -> { where(status: :pending) }
+  scope :accepted, -> { where(status: :accepted) }
+  scope :rejected, -> { where(status: :rejected) }
+
+  # Scopes for matches involving a specific user
+  scope :involving, ->(user) { where("requester_id = ? OR approver_id = ?", user.id, user.id) }
+
+  # Scope for rejected matches by a specific user, regardless of being the requester or approver
+  scope :rejected_by, ->(user) { rejected.where("requester_id = ? OR approver_id = ?", user.id, user.id) }
+
+  # Scopes for matches where the user is the requester or approver specifically
+  scope :requested_by, ->(user) { where(requester: user) }
+  scope :approved_by, ->(user) { where(approver: user) }
+
+  private
+
+  def valid_status_transition
+    if status_changed? && status_was == 'rejected'
+      errors.add(:status, "can't transition from rejected")
+    elsif status == 'accepted' && status_was != 'pending'
+      errors.add(:status, "can only be accepted from pending state")
+    end
+  end
+
 end

@@ -40,8 +40,12 @@ class User < ApplicationRecord
    has_many :approved_matches, class_name: 'Match', foreign_key: 'approver_id'
 
    has_many :sent_messages, class_name: 'Message', foreign_key: 'sender_id'
-   
+
   has_many :received_messages, class_name: 'Message', foreign_key: 'receiver_id'
+
+  def rejected_matches
+    Match.where("(requester_id = :user_id OR approver_id = :user_id) AND status = :status", user_id: id, status: 'rejected')
+  end
 
 
   # Enums
