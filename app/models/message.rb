@@ -26,4 +26,13 @@ class Message < ApplicationRecord
   belongs_to :match
   belongs_to :sender, class_name: "User"
   belongs_to :receiver, class_name: "User"
+
+  validates :body, presence: true
+
+  # Scopes
+  
+  scope :for_match, ->(match_id) { where(match_id: match_id) }
+  scope :from_user, ->(user_id) { where(sender_id: user_id) }
+  scope :to_user, ->(user_id) { where(receiver_id: user_id) }
+
 end
