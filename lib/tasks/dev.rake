@@ -41,6 +41,7 @@ unless Rails.env.production?
           
           )
         puts "added #{u.email}"
+        puts "added #{u.user_gym}"
       end
 
       puts "done"
@@ -72,6 +73,9 @@ unless Rails.env.production?
         end
       end
       puts "done"
+      p "There are now #{User.count} users."
+      p "There are now #{Match.count} matches."
+      p "There are now #{Message.count} messages."
     end
   end
 end
