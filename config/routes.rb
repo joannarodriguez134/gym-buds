@@ -1,7 +1,7 @@
 Rails.application.routes.draw do
 
   # Defines the root path route ("/")
-  root "messages#index"
+  root "matches#index"
   devise_for :users
   
   resources :messages
