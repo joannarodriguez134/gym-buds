@@ -11,9 +11,35 @@ unless Rails.env.production?
     task add_users: :environment do
       puts "adding users..."
       names = ["britney", "carl", "danny", "mark", "mike", "lily", "adam"]
+      last_names = ["smith", "jones", "milan", "castillo"]
+      genders = ['male', 'female', 'nonbinary']
+      gym_frequencies = ['daily', 'twice_a_week', 'multiple_times_a_week', 'weekly', 'every_two_weeks', 'occasionally', 'rarely']
+      ideal_match_genders = ['male', 'female', 'nonbinary']
+      skill_levels = ['beginner', 'intermediate', 'advanced']
+      times_of_day = ['mornings', 'afternoons', 'evenings']
+      workout_types = ['cardio', 'strength_training', 'hiit', 'crossfit', 'yoga', 'pilates', 'dance', 'martial_arts', 'spinning', 'bodybuilding', 'mixed_modal']
+      gym_names = ['east_bank_club', 'esporta_fitness', 'equinox', 'la_fitness', 'planet_fitness', 'fitness_formula_club', 'midtown_athletic_club', 'orange_theory_fitness']
 
       names.each do |name|
-        u = User.create(email: "#{name}@example.com", password: "password")
+        u = User.create(
+          email: "#{name}@example.com", 
+          password: "password",
+          first_name: name,
+          last_name: last_names.sample,
+          bio: Faker::Lorem.paragraph(        
+            sentence_count: 2,        
+            supplemental: true,        
+            random_sentences_to_add: 4      
+            ),
+          gender: genders.sample,
+          gym_frequency_category: gym_frequencies.sample,
+          ideal_match_gender: ideal_match_genders.sample,
+          skill_level: skill_levels.sample,
+          time_of_day: times_of_day.sample,
+          type_of_workouts: workout_types.sample,
+          user_gym: gym_names.sample
+          
+          )
         puts "added #{u.email}"
       end
 
@@ -41,7 +67,7 @@ unless Rails.env.production?
             match: match,
             sender_id: [match.requester_id, match.approver_id].sample,
             receiver_id: [match.requester_id, match.approver_id].sample,
-            body: Faker::TvShows::BigBangTheory.quote # Ensure this matches your column name
+            body: Faker::TvShows::BigBangTheory.quote
           )
         end
       end
