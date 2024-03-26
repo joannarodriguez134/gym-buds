@@ -26,6 +26,7 @@ unless Rails.env.production?
           password: "password",
           first_name: name,
           last_name: last_names.sample,
+          username: name,
           bio: Faker::Lorem.paragraph(        
             sentence_count: 2,        
             supplemental: true,        
@@ -40,6 +41,7 @@ unless Rails.env.production?
           user_gym: gym_names.sample
           
           )
+        puts "Creating user with username: #{u.username} and email: #{name}@example.com"
         puts "added #{u.email}"
         puts "added #{u.user_gym}"
       end
