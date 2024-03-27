@@ -144,4 +144,13 @@ class User < ApplicationRecord
       }[self.type_of_workouts] || self.type_of_workouts
     end
 
+    # Method to calculate age from dob
+  def age
+    return unless dob
+
+    now = Time.zone.now.to_date
+    age = now.year - dob.year - ((now.month > dob.month || (now.month == dob.month && now.day >= dob.day)) ? 0 : 1)
+    age
+  end
+
 end
