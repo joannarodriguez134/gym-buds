@@ -4,6 +4,7 @@
 #
 #  id                     :bigint           not null, primary key
 #  bio                    :text
+#  dob                    :date
 #  email                  :citext           default(""), not null
 #  encrypted_password     :string           default(""), not null
 #  first_name             :string
@@ -98,5 +99,49 @@ class User < ApplicationRecord
       fitness_formula_club: 'fitness_formula_club',
       midtown_athletic_club: 'midtown_athletic_club',
       orange_theory_fitness: 'orange_theory_fitness' }
+
+      # these method are to have a more readable string in the view rather than 
+      # <%= @user.user_gym %>
+
+      def gym_name
+        {
+          east_bank_club: 'East Bank Club',
+          esporta_fitness: 'Esporta Fitness',
+          equinox: 'Equinox',
+          la_fitness: 'LA Fitness',
+          planet_fitness: 'Planet Fitness',
+          fitness_formula_club: 'Fitness Formula Club',
+          midtown_athletic_club: 'Midtown Athletic Club',
+          orange_theory_fitness: 'Orange Theory Fitness'
+        }[self.user_gym.to_sym] || self.user_gym
+      end
+
+      def user_gym_frequency
+        {
+        daily: 'daily',
+       twice_a_week: 'twice a week',
+       multiple_times_a_week: 'multiple times a week',
+       weekly: 'weekly',
+       every_two_weeks: 'every two weeks',
+       occasionally: 'occasionally',
+       rarely: 'rarely'
+      }[self.gym_frequency_category] || self.gym_frequency_category
+      end
+
+    def workouts 
+      {
+        cardio: 'cardio',
+        strength_training: 'strength training',
+        hiit: 'hiit',
+        crossfit: 'crossfit',
+        yoga: 'yoga',
+        pilates: 'pilates',
+        dance: 'dance',
+        martial_arts: 'martial arts',
+        spinning: 'spinning',
+        bodybuilding: 'bodybuilding',
+        mixed_modal: 'mixed modal'
+      }[self.type_of_workouts] || self.type_of_workouts
+    end
 
 end

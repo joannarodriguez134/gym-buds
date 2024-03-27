@@ -1,4 +1,17 @@
 
 <h1>
-  <%= @user.username %>
+  <%= @user.first_name.capitalize()%> <%= @user.last_name.capitalize() %>
 </h1>
+
+<h5> <b>About me </b> </h5>
+<p><%= @user.bio %> </p>
+
+<h5> <b>My basics </b> </h5>
+<p> <b>The gym I go to:</b> <%= @user.gym_name %> </p>
+
+<p> <b>I go to the gym at these times: </b> <%= @user.time_of_day %> </p>
+
+<p> <b>How often do I go to the gym:</b> <%= @user.user_gym_frequency %> </p>
+
+
+<p> <b>Type of workouts I typically do:</b> <%= @user.workouts %> </p>
