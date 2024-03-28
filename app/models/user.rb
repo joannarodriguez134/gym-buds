@@ -36,6 +36,8 @@ class User < ApplicationRecord
   devise :database_authenticatable, :registerable,
          :recoverable, :rememberable, :validatable
 
+  has_one_attached :avatar
+
    #  when the user is the one who initiates the match request
    has_many :requested_matches, class_name: 'Match', foreign_key: 'requester_id'
 

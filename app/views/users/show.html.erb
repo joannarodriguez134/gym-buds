@@ -1,7 +1,13 @@
 
 <h1>
-  <%= @user.first_name.capitalize %> <%= @user.last_name.capitalize %>, <%= @user.age%>
+  <%= @user.first_name.capitalize %> <%= @user.last_name.capitalize %>
+  <% if @user.age.present? %>
+    , <%= @user.age %> 
+  <% end %>
 </h1>
+
+<%# Display the user's avatar if it's attached %>
+<%= image_tag @user.avatar, class: "user-avatar" if @user.avatar.attached? %>
 
 <% if @user.bio.present? %>
   <h5> <b>About me </b> </h5>
@@ -23,5 +29,5 @@
 <% end %>
 
 <% if @user.type_of_workouts.present? %>
-  <p> <b>Type of workouts I typically do:</b> <%= @user.type_of_workouts %> </p>
+  <p> <b>Type of workouts I typically do:</b> <%= @user.workouts %> </p>
 <% end %>
