@@ -12,7 +12,6 @@
 #  gym_frequency_category :string
 #  ideal_match_gender     :string
 #  last_name              :string
-#  profile_picture        :string
 #  remember_created_at    :datetime
 #  reset_password_sent_at :datetime
 #  reset_password_token   :string

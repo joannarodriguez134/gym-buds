@@ -7,6 +7,9 @@
 </h1>
 
 <%# Display the user's avatar if it's attached %>
+
+<%#= image_tag @user.avatar.variant(resize_to_fit: [500, 500]).processed.url, class: "user-avatar" if @user.avatar.attached? %>
+
 <%= image_tag @user.avatar, class: "user-avatar" if @user.avatar.attached? %>
 
 <% if @user.bio.present? %>
