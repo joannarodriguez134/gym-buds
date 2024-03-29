@@ -1,0 +1,33 @@
+
+<h1>
+  <%= @user.first_name.capitalize %> <%= @user.last_name.capitalize %>
+  <% if @user.age.present? %>
+    , <%= @user.age %> 
+  <% end %>
+</h1>
+
+<%# Display the user's avatar if it's attached %>
+<%= image_tag @user.avatar, class: "user-avatar" if @user.avatar.attached? %>
+
+<% if @user.bio.present? %>
+  <h5> <b>About me </b> </h5>
+  <p><%= @user.bio %></p>
+<% end %>
+
+<h5> <b>My basics </b> </h5>
+
+<% if @user.gym_name.present? %>
+  <p> <b>The gym I go to:</b> <%= @user.gym_name %> </p>
+<% end %>
+
+<% if @user.time_of_day.present? %>
+  <p> <b>I go to the gym at these times: </b> <%= @user.time_of_day %> </p>
+<% end %>
+
+<% if @user.user_gym_frequency.present? %>
+  <p> <b>How often do I go to the gym:</b> <%= @user.user_gym_frequency %> </p>
+<% end %>
+
+<% if @user.type_of_workouts.present? %>
+  <p> <b>Type of workouts I typically do:</b> <%= @user.workouts %> </p>
+<% end %>

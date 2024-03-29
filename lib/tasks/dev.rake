@@ -10,7 +10,7 @@ unless Rails.env.production?
 
     task add_users: :environment do
       puts "adding users..."
-      names = ["britney", "carl", "danny", "mark", "mike", "lily", "adam"]
+      names = ["alice", "cameron", "chelsea", "nick", "danny", "sam", "jenny"]
       last_names = ["smith", "jones", "milan", "castillo"]
       genders = ['male', 'female', 'nonbinary']
       gym_frequencies = ['daily', 'twice_a_week', 'multiple_times_a_week', 'weekly', 'every_two_weeks', 'occasionally', 'rarely']
@@ -21,16 +21,19 @@ unless Rails.env.production?
       gym_names = ['east_bank_club', 'esporta_fitness', 'equinox', 'la_fitness', 'planet_fitness', 'fitness_formula_club', 'midtown_athletic_club', 'orange_theory_fitness']
 
       names.each do |name|
+        dob = Faker::Date.between(from: '1997-01-01', to: '2005-12-31') # Random DOB between 1960 and 2005
         u = User.create(
           email: "#{name}@example.com", 
           password: "password",
           first_name: name,
           last_name: last_names.sample,
+          username: name,
           bio: Faker::Lorem.paragraph(        
             sentence_count: 2,        
             supplemental: true,        
             random_sentences_to_add: 4      
             ),
+          dob: dob,
           gender: genders.sample,
           gym_frequency_category: gym_frequencies.sample,
           ideal_match_gender: ideal_match_genders.sample,
@@ -40,6 +43,7 @@ unless Rails.env.production?
           user_gym: gym_names.sample
           
           )
+        puts "Creating user with username: #{u.username} and email: #{name}@example.com"
         puts "added #{u.email}"
         puts "added #{u.user_gym}"
       end
