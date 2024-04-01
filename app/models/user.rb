@@ -117,6 +117,12 @@ class User < ApplicationRecord
         }[self.user_gym.to_sym] || self.user_gym
       end
 
+      def self.gym_name_options
+        user_gyms.keys.map do |key|
+          [User.new(user_gym: key).gym_name, key] # Use an instance of User to transform each key to its human-readable form
+        end
+      end
+
       def user_gym_frequency
         {
         daily: 'daily',
@@ -127,6 +133,12 @@ class User < ApplicationRecord
        occasionally: 'occasionally',
        rarely: 'rarely'
       }[self.gym_frequency_category] || self.gym_frequency_category
+      end
+
+      def self.user_gym_frequency_options
+        gym_frequency_categories.keys.map do |key|
+          [User.new(gym_frequency_category: key).user_gym_frequency, key] # Use an instance of User to transform each key to its human-readable form
+        end
       end
 
     def workouts 
@@ -144,6 +156,13 @@ class User < ApplicationRecord
         mixed_modal: 'mixed modal'
       }[self.type_of_workouts] || self.type_of_workouts
     end
+
+    def self.workouts_options
+      gym_frequency_categories.keys.map do |key|
+        [User.new(gym_frequency_category: key).user_gym_frequency, key] # Use an instance of User to transform each key to its human-readable form
+      end
+    end
+
 
     # Method to calculate age from dob
   def age

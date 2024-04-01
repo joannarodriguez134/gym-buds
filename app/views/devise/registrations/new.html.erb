@@ -4,6 +4,10 @@
   <%= f.error_notification %>
 
   <div class="form-inputs">
+
+  <!--login info-->
+     <%= f.input :username, required: true %>
+
     <%= f.input :email,
                 required: true,
                 autofocus: true,
@@ -16,12 +20,60 @@
                 required: true,
                 input_html: { autocomplete: "new-password" } %>
                 
+
+    <%= f.input :first_name, required: true %>
+
+    <%= f.input :last_name, required: true %>
+
+    <!--<h2></h2>-->
+
+    <!--basic info-->
+    <%= f.radio_button :gender, "female" %> Female
+
+    <%= f.radio_button :gender, "male" %> Male
+
+    <%= f.radio_button :gender, "nonbinary" %> Nonbinary
+
+
+    <%= f.input :dob, as: :date, start_year: Date.today.year - 100, end_year: Date.today.year, order: [:day, :month, :year], prompt: { day: 'Select day', month: 'Select month', year: 'Select year' }, label: 'Date of Birth' %>
+
     <!-- Add the avatar file field here -->
     <%= f.input :avatar, as: :file %>
+
+    <%= f.input :bio, as: :text, 
+             input_html: { 
+               rows: 10, 
+               cols: 50, 
+               placeholder: 'Tell us about yourself', 
+               maxlength: 500 
+             }, 
+             label: 'Biography' %>
+
+   <%= f.input :user_gym, collection: User.gym_name_options, prompt: "What gym do you go to?" %>
+
+   <%= f.input :time_of_day, collection: User.time_of_days.keys, prompt: "What time do you go to the gym?" %>
+
+
+   <%= f.input :gym_frequency_category, collection: User.user_gym_frequency_options, prompt: "How often do you go to the gym?" %>
+
+
+   <%= f.radio_button :skill_level, "beginner" %> Beginner
+
+    <%= f.radio_button :skill_level, "intermediate" %> Intermediate
+
+    <%= f.radio_button :skill_level, "advanced" %> Advanced
+
+
+
+
+
+
+
+
   </div>
 
   <div class="form-actions">
-    <%= f.button :submit, "Sign up" %>
+    <%= f.button :submit, "Sign up", class: "btn-primary" %>
   </div>
 <% end %>
 
