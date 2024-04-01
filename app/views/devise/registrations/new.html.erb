@@ -40,7 +40,7 @@
       </div>
     <% end %>
 
-    <%= f.input :dob, as: :date, start_year: Date.today.year - 100, end_year: Date.today.year, order: [:day, :month, :year], prompt: { day: 'Select day', month: 'Select month', year: 'Select year' }, label: 'Date of Birth' %>
+    <%= f.input :dob, as: :date, start_year: Date.today.year - 100, end_year: Date.today.year, order: [:month, :day, :year], prompt: { month: 'Select month', day: 'Select day', year: 'Select year' }, label: 'Date of Birth' %>
 
     <!-- Add the avatar file field here -->
     <%= f.input :avatar, as: :file %>

@@ -52,6 +52,7 @@ class User < ApplicationRecord
 
   has_many :received_messages, class_name: 'Message', foreign_key: 'receiver_id', dependent: :destroy
 
+  validates :email, presence: true
   validates :first_name, presence: true
   validates :last_name, presence: true
   validates :dob, presence: true

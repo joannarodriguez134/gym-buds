@@ -11,7 +11,14 @@ class ApplicationController < ActionController::Base
   protected
 
   def configure_permitted_parameters
-    devise_parameter_sanitizer.permit(:account_update, keys: [:avatar])
+    devise_parameter_sanitizer.permit(:account_update, keys: [:first_name, :last_name, :bio, :dob, :email, :gender, :gym_frequency_category, :ideal_match_gender, :skill_level, :time_of_day, :type_of_workouts, :user_gym, :username, :avatar])
     devise_parameter_sanitizer.permit(:sign_up, keys: [:first_name, :last_name, :bio, :dob, :email, :gender, :gym_frequency_category, :ideal_match_gender, :skill_level, :time_of_day, :type_of_workouts, :user_gym, :username, :avatar])
   end
+
+  def user_not_authorized
+    flash[:alert] = "You are not authorized to perform this action."
+    
+    redirect_back(fallback_location: root_url)
+  end
+  
 end
