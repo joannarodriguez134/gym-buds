@@ -1,4 +1,7 @@
-<h2>Sign up</h2>
+
+<h5 class="card-header">
+        <%= resource_name != "user" ? resource_name.to_s.titleize : "" %> Sign Up
+      </h5>
 
 <%= simple_form_for(resource, as: resource_name, url: registration_path(resource_name), html: { multipart: true }) do |f| %>
   <%= f.error_notification %>
@@ -6,7 +9,7 @@
   <div class="form-inputs">
 
   <!--login info-->
-     <%= f.input :username, required: true %>
+    <%= f.input :username, required: true %>
 
     <%= f.input :email,
                 required: true,
@@ -28,12 +31,14 @@
     <!--<h2></h2>-->
 
     <!--basic info-->
-    <%= f.radio_button :gender, "female" %> Female
-
-    <%= f.radio_button :gender, "male" %> Male
-
-    <%= f.radio_button :gender, "nonbinary" %> Nonbinary
-
+    <% User.genders.each_with_index do |gender, i| %>
+      <div class="form-check">
+        <input class="form-check-input" type="radio" name="userGenderRadio" id="<%= "userGenderRadio#{i}" %>">
+        <label class="form-check-label" for="<%= "userGenderRadio#{i}" %>">
+          <%= gender.at(0).titleize %>
+        </label>
+      </div>
+    <% end %>
 
     <%= f.input :dob, as: :date, start_year: Date.today.year - 100, end_year: Date.today.year, order: [:day, :month, :year], prompt: { day: 'Select day', month: 'Select month', year: 'Select year' }, label: 'Date of Birth' %>
 
@@ -63,11 +68,8 @@
 
     <%= f.radio_button :skill_level, "advanced" %> Advanced
 
-
-
-
-
-
+     <%= f.input :ideal_match_gender, as: :select, collection: ['Male', 'Female', 'Non-binary'], input_html: { multiple: true }, include_hidden: false %>
+<!---->
 
 
   </div>

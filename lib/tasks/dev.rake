@@ -36,7 +36,7 @@ unless Rails.env.production?
           dob: dob,
           gender: genders.sample,
           gym_frequency_category: gym_frequencies.sample,
-          ideal_match_gender: ideal_match_genders.sample,
+          ideal_match_gender: ideal_match_genders.sample(rand(1..ideal_match_genders.size)),
           skill_level: skill_levels.sample,
           time_of_day: times_of_day.sample,
           type_of_workouts: workout_types.sample,
