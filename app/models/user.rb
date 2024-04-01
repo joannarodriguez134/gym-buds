@@ -10,9 +10,8 @@
 #  first_name             :string
 #  gender                 :string
 #  gym_frequency_category :string
-#  ideal_match_gender     :string
+#  ideal_match_gender     :string           default(NULL), is an Array
 #  last_name              :string
-#  profile_picture        :string
 #  remember_created_at    :datetime
 #  reset_password_sent_at :datetime
 #  reset_password_token   :string
@@ -38,15 +37,26 @@ class User < ApplicationRecord
 
   has_one_attached :avatar
 
+  # when user gets deleted so does matches and messages
+  has_many :matches, dependent: :destroy
+
+  has_many :messages, dependent: :destroy
+
    #  when the user is the one who initiates the match request
-   has_many :requested_matches, class_name: 'Match', foreign_key: 'requester_id'
+   has_many :requested_matches, class_name: 'Match', foreign_key: 'requester_id', dependent: :destroy
 
    # when the user is the one who approves the match request
-   has_many :approved_matches, class_name: 'Match', foreign_key: 'approver_id'
+   has_many :approved_matches, class_name: 'Match', foreign_key: 'approver_id', dependent: :destroy
 
-   has_many :sent_messages, class_name: 'Message', foreign_key: 'sender_id'
+   has_many :sent_messages, class_name: 'Message', foreign_key: 'sender_id', dependent: :destroy
 
-  has_many :received_messages, class_name: 'Message', foreign_key: 'receiver_id'
+  has_many :received_messages, class_name: 'Message', foreign_key: 'receiver_id', dependent: :destroy
+
+  validates :email, presence: true
+  validates :first_name, presence: true
+  validates :last_name, presence: true
+  validates :dob, presence: true
+  validates :username, presence: true
 
   def rejected_matches
     Match.where("(requester_id = :user_id OR approver_id = :user_id) AND status = :status", user_id: id, status: 'rejected')
@@ -66,11 +76,11 @@ class User < ApplicationRecord
        rarely: 'rarely'
      }
 
-     enum ideal_match_gender: { 
-      match_gender_male: 'male', 
-      match_gender_female: 'female', 
-      match_gender_nonbinary: 'nonbinary' 
-    }
+    #  enum ideal_match_gender: { 
+    #   match_gender_male: 'male', 
+    #   match_gender_female: 'female', 
+    #   match_gender_nonbinary: 'nonbinary' 
+    # }
 
   enum skill_level: { beginner: 'beginner', intermediate: 'intermediate', advanced: 'advanced' }
 
@@ -118,6 +128,12 @@ class User < ApplicationRecord
         }[self.user_gym.to_sym] || self.user_gym
       end
 
+      def self.gym_name_options
+        user_gyms.keys.map do |key|
+          [User.new(user_gym: key).gym_name, key] # Use an instance of User to transform each key to its human-readable form
+        end
+      end
+
       def user_gym_frequency
         {
         daily: 'daily',
@@ -128,6 +144,12 @@ class User < ApplicationRecord
        occasionally: 'occasionally',
        rarely: 'rarely'
       }[self.gym_frequency_category] || self.gym_frequency_category
+      end
+
+      def self.user_gym_frequency_options
+        gym_frequency_categories.keys.map do |key|
+          [User.new(gym_frequency_category: key).user_gym_frequency, key] # Use an instance of User to transform each key to its human-readable form
+        end
       end
 
     def workouts 
@@ -146,6 +168,13 @@ class User < ApplicationRecord
       }[self.type_of_workouts] || self.type_of_workouts
     end
 
+    def self.workouts_options
+      gym_frequency_categories.keys.map do |key|
+        [User.new(gym_frequency_category: key).user_gym_frequency, key] # Use an instance of User to transform each key to its human-readable form
+      end
+    end
+
+
     # Method to calculate age from dob
   def age
     return unless dob
@@ -153,6 +182,10 @@ class User < ApplicationRecord
     now = Time.zone.now.to_date
     age = now.year - dob.year - ((now.month > dob.month || (now.month == dob.month && now.day >= dob.day)) ? 0 : 1)
     age
+  end
+
+  def full_name
+    [first_name, last_name].join(" ")
   end
 
 end

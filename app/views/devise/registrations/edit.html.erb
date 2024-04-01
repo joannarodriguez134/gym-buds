@@ -7,6 +7,33 @@
 
     <!-- Avatar upload field -->
     <%= f.input :avatar, as: :file %>
+
+    <%= f.input :bio, as: :text, 
+             input_html: { 
+               rows: 10, 
+               cols: 50, 
+               placeholder: 'Tell us about yourself', 
+               maxlength: 500 
+             }, 
+             label: 'Biography' %>
+
+    <%= f.input :user_gym, collection: User.gym_name_options, prompt: "What gym do you go to?" %>
+
+
+    <%= f.input :time_of_day, collection: User.time_of_days.keys, prompt: "What time do you go to the gym?" %>
+
+
+   <%= f.input :gym_frequency_category, collection: User.user_gym_frequency_options, prompt: "How often do you go to the gym?" %>
+
+
+   <%= f.radio_button :skill_level, "beginner" %> Beginner
+
+    <%= f.radio_button :skill_level, "intermediate" %> Intermediate
+
+    <%= f.radio_button :skill_level, "advanced" %> Advanced
+
+     <%= f.input :ideal_match_gender, as: :select, collection: ['Male', 'Female', 'Non-binary'], input_html: { multiple: true }, include_hidden: false %>
+     
     
     <%= f.input :email, required: true, autofocus: true %>
 

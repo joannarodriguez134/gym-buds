@@ -10,7 +10,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema[7.0].define(version: 2024_03_27_165022) do
+ActiveRecord::Schema[7.0].define(version: 2024_04_01_160149) do
   # These are extensions that must be enabled in order to support this database
   enable_extension "citext"
   enable_extension "plpgsql"
@@ -76,10 +76,9 @@ ActiveRecord::Schema[7.0].define(version: 2024_03_27_165022) do
     t.string "first_name"
     t.string "last_name"
     t.text "bio"
-    t.string "profile_picture"
     t.string "gender"
     t.string "user_gym"
-    t.string "ideal_match_gender"
+    t.string "ideal_match_gender", default: [], array: true
     t.string "skill_level"
     t.string "type_of_workouts"
     t.string "time_of_day"

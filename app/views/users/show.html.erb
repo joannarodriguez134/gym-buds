@@ -1,13 +1,12 @@
 
 <h1>
-  <%= @user.first_name.capitalize %> <%= @user.last_name.capitalize %>
-  <% if @user.age.present? %>
-    , <%= @user.age %> 
-  <% end %>
+  <%= @user.full_name.titleize %>, <%= @user.age %>
 </h1>
 
 <%# Display the user's avatar if it's attached %>
-<%= image_tag @user.avatar, class: "user-avatar" if @user.avatar.attached? %>
+
+
+<%= image_tag(@user.avatar, class: "img-fluid", size: "500") if @user.avatar.attached? %>
 
 <% if @user.bio.present? %>
   <h5> <b>About me </b> </h5>
