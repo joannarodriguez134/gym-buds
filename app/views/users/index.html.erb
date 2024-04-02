@@ -1,0 +1,18 @@
+<ul class="list-unstyled">
+  <% @users.each do |user| %>
+    <li class="mb-3 pb-3 border-bottom">
+      <div class="media align-items-center">
+        <% if user.avatar.attached? %>
+          <%= image_tag(user.avatar, size: "75", class: "mr-3 rounded-circle", alt: "#{user.full_name.titleize}'s avatar") %>
+        <% else %>
+          <%= image_tag('default-avatar.jpg', class: "mr-3 rounded-circle", size: "75", alt: "Default avatar") %>
+        <% end %>
+
+        <div class="media-body">
+          <h5 class="mt-0 mb-1"><%= user.full_name.titleize %></h5>
+          <%= link_to 'View profile', user_path(user.username), class: "btn btn-primary" %>
+        </div>
+      </div>
+    </li>
+  <% end %>
+</ul>

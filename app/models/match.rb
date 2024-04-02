@@ -25,6 +25,9 @@ class Match < ApplicationRecord
 
   has_many :messages
 
+  # Scope for accepted matches
+  scope :accepted, -> { where(status: 'accepted') }
+
   enum status: { pending: 'pending', accepted: 'accepted', rejected: 'rejected' }
 
   validate :valid_status_transition, on: :update

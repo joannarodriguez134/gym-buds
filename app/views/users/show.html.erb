@@ -30,3 +30,7 @@
 <% if @user.type_of_workouts.present? %>
   <p> <b>Type of workouts I typically do:</b> <%= @user.workouts %> </p>
 <% end %>
+
+<% if policy(@user).edit? %>
+  <%= link_to 'Edit Profile', edit_user_registration_path, class: "btn btn-primary"%>
+<% end %>

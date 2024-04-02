@@ -56,7 +56,7 @@ unless Rails.env.production?
 
       statuses = ['pending', 'accepted', 'pending']
 
-      25.times do |_i|
+      5.times do |_i|
         approver = User.all.sample
         requester = User.where.not(id: approver.id).sample # Avoid the same user
         Match.create(approver: approver, requester: requester, status: statuses.sample)
@@ -67,7 +67,7 @@ unless Rails.env.production?
     task add_messages: :environment do
       puts "adding messages"
       Match.all.each do |match|
-        rand(1..5).times do |_i|
+        rand(1..2).times do |_i|
           Message.create(
             match: match,
             sender_id: [match.requester_id, match.approver_id].sample,
