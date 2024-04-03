@@ -24,6 +24,8 @@ class MatchesController < ApplicationController
 
   # GET /matches/1 or /matches/1.json
   def show
+    # only show the accepted matches
+    @matches = Match.where(status: 'accepted').where("requester_id = ? OR approver_id = ?", @user.id, @user.id)
   end
 
   # GET /matches/new

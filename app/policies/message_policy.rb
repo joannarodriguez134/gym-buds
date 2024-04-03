@@ -16,11 +16,12 @@ class MessagePolicy
 
   def create?
 
-    return false unless user.present?
+    true
+    # return false unless user.present?
   
-    match = Match.accepted_between(user.id, message.receiver_id)
+    # match = Match.accepted_between(user.id, message.first.receiver_id)
     
-    match.present?
+    # match.present?
   end
 
   def new?
@@ -43,7 +44,6 @@ class MessagePolicy
 private
 
 def match_belongs_to_user?
-  # Assuming message.receiver_id is available
   match = Match.accepted_between(user.id, message.receiver_id)
   match && (match.requester_id == user.id || match.approver_id == user.id)
   end

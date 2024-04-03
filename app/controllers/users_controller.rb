@@ -10,9 +10,13 @@ class UsersController < ApplicationController
   end
 
   def index
-    # filtering for current user to not show up in caresoul
-    @users = User.where.not(id: current_user.id)
+    # Get ids of users where there is an accepted match with the current user
+    accepted_matches_user_ids = Match.where(status: 'accepted').where("requester_id = ? OR approver_id = ?", current_user.id, current_user.id).pluck(:requester_id, :approver_id).flatten.uniq
+  
+    # Exclude the current user and users with whom they have an accepted match
+    @users = User.where.not(id: [current_user.id, *accepted_matches_user_ids])
   end
+  
 
   private
 
