@@ -48,6 +48,10 @@ class Match < ApplicationRecord
   scope :requested_by, ->(user) { where(requester: user) }
   scope :approved_by, ->(user) { where(approver: user) }
 
+  def self.accepted_between(user1_id, user2_id)
+    where(status: 'accepted').find_by("(requester_id = ? AND approver_id = ?) OR (requester_id = ? AND approver_id = ?)", user1_id, user2_id, user2_id, user1_id)
+  end
+
   private
 
   def valid_status_transition

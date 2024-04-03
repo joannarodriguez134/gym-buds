@@ -69,6 +69,9 @@
     <%= f.radio_button :skill_level, "advanced" %> Advanced
 
      <%= f.input :ideal_match_gender, as: :select, collection: ['Male', 'Female', 'Non-binary'], input_html: { multiple: true }, include_hidden: false %>
+
+     <%#= f.select :ideal_match_gender, User.ideal_match_genders.keys.map { |k| [k.humanize, k] }, {}, { multiple: true, name: 'user[ideal_match_gender][]' } %>
+
 <!---->
 
 

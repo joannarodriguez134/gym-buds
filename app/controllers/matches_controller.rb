@@ -6,10 +6,6 @@ class MatchesController < ApplicationController
   before_action { authorize (@match || Match )}
 
   # GET /matches or /matches.json
-  # def index
-  #   @matches = Match.all
-  # end
-
   def index
     raw_matches = Match.accepted.where("requester_id = ? OR approver_id = ?", current_user.id, current_user.id)
     

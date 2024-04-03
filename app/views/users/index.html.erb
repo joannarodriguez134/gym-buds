@@ -1,18 +1,37 @@
-<ul class="list-unstyled">
-  <% @users.each do |user| %>
-    <li class="mb-3 pb-3 border-bottom">
-      <div class="media align-items-center">
-        <% if user.avatar.attached? %>
-          <%= image_tag(user.avatar, size: "75", class: "mr-3 rounded-circle", alt: "#{user.full_name.titleize}'s avatar") %>
-        <% else %>
-          <%= image_tag('default-avatar.jpg', class: "mr-3 rounded-circle", size: "75", alt: "Default avatar") %>
-        <% end %>
-
-        <div class="media-body">
-          <h5 class="mt-0 mb-1"><%= user.full_name.titleize %></h5>
-          <%= link_to 'View profile', user_path(user.username), class: "btn btn-primary" %>
+<div id="usersCarousel" class="carousel slide" data-bs-ride="carousel">
+  <div class="carousel-inner">
+    <% @users.each_with_index do |user, index| %>
+      <div class="carousel-item <%= 'active' if index.zero? %>">
+        <div class="d-block w-100 text-center">
+          <% if user.avatar.attached? %>
+            <%= image_tag(user.avatar, class: "d-block w-100", alt: "#{user.full_name.titleize}'s avatar") %>
+          <% else %>
+            <%= image_tag('default-avatar.jpg', class: "d-block w-100", alt: "Default avatar") %>
+          <% end %>
+          <div class="carousel-caption d-none d-md-block">
+            <div class="card w-175 mb-3">
+              <div class="card-body">
+                <h5 class="card-title"><%= user.full_name.titleize %></h5>
+                <p class="card-text"> <%= user.bio  %> </p>
+                <%= link_to 'View profile', user_path(user.username), class: "btn btn-primary" %>
+              </div>
+            </div>
+          </div>
         </div>
       </div>
-    </li>
-  <% end %>
-</ul>
+    <% end %>
+  </div>
+  <% if @users.size > 1 %>
+    <button class="carousel-control-prev" type="button" data-bs-target="#usersCarousel" data-bs-slide="prev">
+      <span class="carousel-control-prev-icon" aria-hidden="true"></span>
+      <span class="visually-hidden">Previous</span>
+    </button>
+    <button class="carousel-control-next" type="button" data-bs-target="#usersCarousel" data-bs-slide="next">
+      <span class="carousel-control-next-icon" aria-hidden="true"></span>
+      <span class="visually-hidden">Next</span>
+    </button>
+
+  </div>
+
+<% end %>
+</div>
