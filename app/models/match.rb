@@ -25,6 +25,9 @@ class Match < ApplicationRecord
 
   has_many :messages
 
+  # Scope for accepted matches
+  scope :accepted, -> { where(status: 'accepted') }
+
   enum status: { pending: 'pending', accepted: 'accepted', rejected: 'rejected' }
 
   validate :valid_status_transition, on: :update
@@ -44,6 +47,10 @@ class Match < ApplicationRecord
   # Scopes for matches where the user is the requester or approver specifically
   scope :requested_by, ->(user) { where(requester: user) }
   scope :approved_by, ->(user) { where(approver: user) }
+
+  def self.accepted_between(user1_id, user2_id)
+    where(status: 'accepted').find_by("(requester_id = ? AND approver_id = ?) OR (requester_id = ? AND approver_id = ?)", user1_id, user2_id, user2_id, user1_id)
+  end
 
   private
 

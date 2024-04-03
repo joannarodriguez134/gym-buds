@@ -1,10 +1,26 @@
 class MatchesController < ApplicationController
   before_action :set_match, only: %i[ show edit update destroy ]
+  before_action :ensure_current_user_is_owner, only: [:destroy, :update, :edit]
+  before_action :ensure_user_is_authorized, only: [:show]
+
+  before_action { authorize (@match || Match )}
 
   # GET /matches or /matches.json
   def index
-    @matches = Match.all
+    raw_matches = Match.accepted.where("requester_id = ? OR approver_id = ?", current_user.id, current_user.id)
+    
+    unique_match_ids = raw_matches.each_with_object(Set.new) do |match, unique_matches|
+      pair = [match.requester_id, match.approver_id].sort
+      unique_matches.add(pair)
+    end
+    
+    @matches = raw_matches.select do |match|
+      match_pair = [match.requester_id, match.approver_id].sort
+      unique_match_ids.include?(match_pair)
+    end.uniq { |m| [m.requester_id, m.approver_id].sort }
   end
+  
+  
 
   # GET /matches/1 or /matches/1.json
   def show
@@ -58,7 +74,6 @@ class MatchesController < ApplicationController
   end
 
   private
-    # Use callbacks to share common setup or constraints between actions.
     def set_match
       @match = Match.find(params[:id])
     end
@@ -66,5 +81,17 @@ class MatchesController < ApplicationController
     # Only allow a list of trusted parameters through.
     def match_params
       params.require(:match).permit(:status, :requester_id, :approver_id)
+    end
+
+    def ensure_current_user_is_owner
+      if current_user != (@match.requester || @match.approver)
+        redirect_back fallback_location: root_url, alert: "You're not authorized for that."
+      end
+    end
+
+    def ensure_user_is_authorized
+      if !MatchPolicy.new(current_user, @match).show?
+        redirect_back fallback_location: root_url
+      end
     end
 end

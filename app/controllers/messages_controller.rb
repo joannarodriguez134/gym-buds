@@ -1,9 +1,10 @@
 class MessagesController < ApplicationController
   before_action :set_message, only: %i[ show edit update destroy ]
+  before_action { authorize (@message || Message )}
 
   # GET /messages or /messages.json
   def index
-    @messages = Message.all
+    @messages = Message.where("sender_id = ? OR receiver_id = ?", current_user.id, current_user.id).order(created_at: :desc)
   end
 
   # GET /messages/1 or /messages/1.json

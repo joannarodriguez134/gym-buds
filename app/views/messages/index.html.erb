@@ -1,14 +1,19 @@
 <p style="color: green"><%= notice %></p>
 
-<h1>Messages</h1>
+<h1>My Messages</h1>
 
-<div id="messages">
+<ul>
   <% @messages.each do |message| %>
-    <%= render message %>
-    <p>
-      <%= link_to "Show this message", message %>
-    </p>
+    <li>
+      <% if message.sender == current_user %>
+        To <%= message.receiver.email %>: <%= message.body %>
+      <% else %>
+        From <%= message.sender.email %>: <%= message.body %>
+      <% end %>
+      <small><%= message.created_at.strftime("%b %d, %Y %H:%M") %></small>
+    </li>
   <% end %>
-</div>
+</ul>
+
 
 <%= link_to "New message", new_message_path %>

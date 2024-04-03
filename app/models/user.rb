@@ -58,6 +58,8 @@ class User < ApplicationRecord
   validates :dob, presence: true
   validates :username, presence: true
 
+  scope :all_except, ->(user) { where.not(id: user) }
+
   def rejected_matches
     Match.where("(requester_id = :user_id OR approver_id = :user_id) AND status = :status", user_id: id, status: 'rejected')
   end

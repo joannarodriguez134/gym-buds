@@ -1,0 +1,33 @@
+<h2 class="text-center my-4">Gymbuds: Just a Swipe Away – Match, Message, Meet!</h2>
+
+<div class="text-center">
+  <%= image_tag("gym-buds-logo.png", alt: "Gym Buds Logo", class: "img-fluid my-3", width: "500") %>
+</div>
+
+<div class="d-flex justify-content-center my-4">
+  <%= button_to "Get Started", new_user_registration_path, class: "btn btn-lg btn-primary mx-2", role: "button" %>
+  <%= button_to "Sign In", new_user_session_path, class: "btn btn-lg btn-danger mx-2", role: "button" %>
+</div>
+
+<div class="d-flex flex-row justify-content-center flex-wrap">
+  <div class="card mx-2 my-2" style="width: 18rem; background-color: #825DA7; color: white;">
+    <div class="card-body">
+      <h5 class="card-title">Match</h5>
+      <p class="card-text">Swipe through profiles and look for your potential gym buddy.</p>
+    </div>
+  </div>
+
+  <div class="card mx-2 my-2" style="width: 18rem; background-color: #5BABB6; color: white;">
+    <div class="card-body">
+      <h5 class="card-title">Message</h5>
+      <p class="card-text">Found a match? It's time to chat! Share goals, tips, and plan your first gym meet-up.</p>
+    </div>
+  </div>
+
+  <div class="card mx-2 my-2" style="width: 18rem; background-color: #5BB695; color: white;">
+    <div class="card-body">
+      <h5 class="card-title">Meet</h5>
+      <p class="card-text">Sync schedules, pick a spot, and let the gains begin!</p>
+    </div>
+  </div>
+</div>

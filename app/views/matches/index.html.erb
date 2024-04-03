@@ -2,13 +2,8 @@
 
 <h1>Matches</h1>
 
-<div id="matches">
-  <% @matches.each do |match| %>
-    <%= render match %>
-    <p>
-      <%= link_to "Show this match", match %>
-    </p>
-  <% end %>
-</div>
-
-<%= link_to "New match", new_match_path %>
+<% @matches.each do |match| %>
+  <div>
+    Match between <%= match.requester.full_name.titleize %> and <%= match.approver.full_name.titleize %>
+  </div>
+<% end %>

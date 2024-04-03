@@ -19,6 +19,10 @@
   <p> <b>The gym I go to:</b> <%= @user.gym_name %> </p>
 <% end %>
 
+<% if @user.gender.present? %>
+  <p> <b>My gender:</b> <%= @user.gender %> </p>
+<% end %>
+
 <% if @user.time_of_day.present? %>
   <p> <b>I go to the gym at these times: </b> <%= @user.time_of_day %> </p>
 <% end %>
@@ -27,6 +31,24 @@
   <p> <b>How often do I go to the gym:</b> <%= @user.user_gym_frequency %> </p>
 <% end %>
 
+<% if @user.skill_level.present? %>
+  <p> <b>My skill level:</b> <%= @user.skill_level %> </p>
+<% end %>
+
 <% if @user.type_of_workouts.present? %>
   <p> <b>Type of workouts I typically do:</b> <%= @user.workouts %> </p>
+<% end %>
+
+
+<% if @user.ideal_match_gender.present? %>
+  <p> <b>Im looking to workout with:</b> 
+<!--  loop over all the ideal match genders-->
+  <% @user.ideal_match_gender.each do |ideal_gender| %>
+      <%= ideal_gender%>
+    <% end %>
+   </p>
+<% end %>
+
+<% if policy(@user).edit? %>
+  <%= link_to 'Edit Profile', edit_user_registration_path, class: "btn btn-primary"%>
 <% end %>
