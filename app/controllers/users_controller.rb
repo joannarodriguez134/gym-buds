@@ -18,12 +18,21 @@ class UsersController < ApplicationController
   end
 
   def messages
-    @user = User.find_by!(username: params.fetch(:username))
-    # Fetch only matches with 'accepted' status for the user
-    accepted_matches_ids = Match.where("(requester_id = :user_id OR approver_id = :user_id) AND status = 'accepted'", user_id: @user.id).pluck(:id)
-    # Fetch messages related to those matches
-    @messages = Message.where(match_id: accepted_matches_ids).order(created_at: :desc)
+    @user = User.find_by!(username: params[:username])
+  
+    # Fetch only matches with 'accepted' status involving the current user
+    accepted_matches_ids = Match.where(status: 'accepted')
+                                .where("requester_id = ? OR approver_id = ?", @user.id, @user.id)
+                                .pluck(:id)
+  
+    # Fetch messages related to those matches where the user is either sender or receiver
+    @messages = Message.includes(:sender, :receiver)
+                        .where(match_id: accepted_matches_ids)
+                        .where("sender_id = :user_id OR receiver_id = :user_id", user_id: @user.id)
+                        .order(created_at: :desc)
   end
+  
+  
   
 
   private

@@ -1,6 +1,6 @@
 class MessagesController < ApplicationController
   before_action :set_message, only: %i[ show edit update destroy ]
-  before_action :set_match, only: %i[ show edit update destroy ]
+  before_action :set_match, only: %i[create]
   before_action { authorize (@message || Message) }
 
   # GET /messages or /messages.json
@@ -24,18 +24,31 @@ class MessagesController < ApplicationController
   def edit
   end
 
+
   # POST /messages or /messages.json
   def create
     @match = Match.find(params[:match_id])
-    # Ensure the current user is part of the match before creating a message.
-    @message = @match.messages.build(message_params.merge(sender_id: current_user.id))
+    @message = @match.messages.build(message_params)
+    @message.sender_id = current_user.id
+    
+    if @message.sender_id == @message.receiver_id
+      redirect_to some_path, alert: "Cannot send messages to yourself."
+      return
+    end
   
+    if @match.status != 'accepted' || (@match.requester_id != current_user.id && @match.approver_id != current_user.id)
+      redirect_to some_path, alert: "Not authorized to send messages."
+      return
+    end
+    
     if @message.save
       redirect_to match_messages_path(@match), notice: 'Your changes have been saved.'
     else
       render :new
     end
   end
+  
+  
   
 
   # PATCH/PUT /messages/1 or /messages/1.json
@@ -82,7 +95,7 @@ end
   # Only allow a list of trusted parameters through.
   private
   def message_params
-    params.require(:message).permit(:body)
+    params.require(:message).permit(:body, :receiver_id)
   end
   
 end
