@@ -10,7 +10,7 @@
 #  first_name             :string
 #  gender                 :string
 #  gym_frequency_category :string
-#  ideal_match_gender     :string           default(NULL), is an Array
+#  ideal_match_gender     :string           default([]), is an Array
 #  last_name              :string
 #  remember_created_at    :datetime
 #  reset_password_sent_at :datetime

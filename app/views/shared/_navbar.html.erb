@@ -15,7 +15,7 @@
             <% end %>
           </li>
           <li class="nav-item">
-            <%= link_to messages_path, class: "nav-link" do %>
+            <%= link_to user_messages_path(current_user.username), class: "nav-link" do %>
               <i class="fas fa-envelope fa-fw"></i> Messages
             <% end %>
           </li>
@@ -24,11 +24,11 @@
     </div>
     <ul class="navbar-nav">
       <% if user_signed_in? %>
-        <li class="nav-item">
-          <%= link_to new_message_path, class: "nav-link" do %>
-            <i class="fas fa-plus-circle"></i> Add new message
-          <% end %>
-        </li>
+        <!--<li class="nav-item">-->
+          <%#= link_to new_match_message_path(@match), class: "nav-link" do %>
+<!--            <i class="fas fa-plus-circle"></i> Add new message-->
+          <%# end %>
+        <!--</li>-->
         <li class="nav-item">
           <%= link_to user_path(current_user.username), class: "nav-link" do %>
             <i class="fas fa-home fa-fw"></i> Your profile
@@ -41,7 +41,6 @@
           <div class="dropdown-menu" aria-labelledby="navbarDropdown">
             <%= link_to "Edit profile", edit_user_registration_path, class: "dropdown-item" %>
             <%= button_to "Sign out", destroy_user_session_path, method: :delete, class: "dropdown-item" %>
-            
           </div>
         </li>
       <% else %>

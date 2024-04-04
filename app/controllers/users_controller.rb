@@ -16,6 +16,14 @@ class UsersController < ApplicationController
     # Exclude the current user and users with whom they have an accepted match
     @users = User.where.not(id: [current_user.id, *accepted_matches_user_ids])
   end
+
+  def messages
+    @user = User.find(params[:id])
+    # Fetch only matches with 'accepted' status for the user
+    accepted_matches_ids = Match.where("(requester_id = :user_id OR approver_id = :user_id) AND status = 'accepted'", user_id: @user.id).pluck(:id)
+    # Fetch messages related to those matches
+    @messages = Message.where(match_id: accepted_matches_ids).order(created_at: :desc)
+  end
   
 
   private

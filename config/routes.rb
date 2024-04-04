@@ -4,11 +4,16 @@ Rails.application.routes.draw do
   root "users#index"
   get "landing" => "pages#landing"
   devise_for :users
-  
-  resources :messages
-  resources :matches
 
+  # message belongs to match
+  resources :matches do
+    resources :messages
+  end
+  
+# Add a custom route for user messages
+get 'users/:id/messages', to: 'users#messages', as: :user_messages
   get '/:username', to: 'users#show', as: :user
+  
 
 
   resources :users do

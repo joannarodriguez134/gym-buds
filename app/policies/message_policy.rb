@@ -15,13 +15,7 @@ class MessagePolicy
   end
 
   def create?
-
     true
-    # return false unless user.present?
-  
-    # match = Match.accepted_between(user.id, message.first.receiver_id)
-    
-    # match.present?
   end
 
   def new?

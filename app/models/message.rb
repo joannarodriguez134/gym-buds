@@ -35,4 +35,16 @@ class Message < ApplicationRecord
   scope :from_user, ->(user_id) { where(sender_id: user_id) }
   scope :to_user, ->(user_id) { where(receiver_id: user_id) }
 
+  # Retrieves messages for a given user that are part of accepted matches
+  def self.for_user_in_accepted_matches(user_id)
+    joins(:match)
+      .where(matches: { status: 'accepted' })
+      .where("messages.sender_id = ? OR messages.receiver_id = ?", user_id, user_id)
+  end
+
+  def self.accepted_between(user1_id, user2_id)
+    accepted.where(requester_id: user1_id, approver_id: user2_id)
+            .or(accepted.where(requester_id: user2_id, approver_id: user1_id))
+  end
+
 end

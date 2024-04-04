@@ -1,8 +1,7 @@
-<%= form_with(model: message) do |form| %>
+<%= form_with(model: [ @match, Message.new ], local: true) do |form| %>
   <% if message.errors.any? %>
-    <div style="color: red">
+    <div id="error_explanation">
       <h2><%= pluralize(message.errors.count, "error") %> prohibited this message from being saved:</h2>
-
       <ul>
         <% message.errors.each do |error| %>
           <li><%= error.full_message %></li>
@@ -11,27 +10,10 @@
     </div>
   <% end %>
 
-  <div>
-    <%= form.label :body, style: "display: block" %>
-    <%= form.text_area :body %>
+  <div class="field">
+    <%= form.label :body %>
+    <%= form.text_area :body, required: true %>
   </div>
 
-  <div>
-    <%= form.label :match_id, style: "display: block" %>
-    <%= form.text_field :match_id %>
-  </div>
-
-  <div>
-    <%= form.label :sender_id, style: "display: block" %>
-    <%= form.text_field :sender_id %>
-  </div>
-
-  <div>
-    <%= form.label :receiver_id, style: "display: block" %>
-    <%= form.text_field :receiver_id %>
-  </div>
-
-  <div>
-    <%= form.submit %>
-  </div>
+  <%= form.submit "Send" %>
 <% end %>

@@ -10,7 +10,7 @@ unless Rails.env.production?
 
     task add_users: :environment do
       puts "adding users..."
-      names = ["alice", "cameron", "chelsea", "nick", "danny", "sam", "jenny"]
+      names = ["alice", "cameron", "chelsea", "nick", "danny", "sam", "jenny", "bob"]
       last_names = ["smith", "jones", "milan", "castillo"]
       genders = ['male', 'female', 'nonbinary']
       gym_frequencies = ['daily', 'twice_a_week', 'multiple_times_a_week', 'weekly', 'every_two_weeks', 'occasionally', 'rarely']
@@ -48,6 +48,7 @@ unless Rails.env.production?
         puts "added #{u.user_gym}"
       end
 
+      p "There are now #{User.count} users."
       puts "done"
     end
 
@@ -61,13 +62,14 @@ unless Rails.env.production?
         requester = User.where.not(id: approver.id).sample # Avoid the same user
         Match.create(approver: approver, requester: requester, status: statuses.sample)
       end
+      p "There are now #{Match.count} matches."
       puts "done"
     end
 
     task add_messages: :environment do
       puts "adding messages"
       Match.all.each do |match|
-        rand(1..2).times do |_i|
+        rand(1..4).times do
           Message.create(
             match: match,
             sender_id: [match.requester_id, match.approver_id].sample,
@@ -76,10 +78,8 @@ unless Rails.env.production?
           )
         end
       end
-      puts "done"
-      p "There are now #{User.count} users."
-      p "There are now #{Match.count} matches."
       p "There are now #{Message.count} messages."
+      puts "done"
     end
   end
 end
