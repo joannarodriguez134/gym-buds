@@ -10,9 +10,11 @@ Rails.application.routes.draw do
     resources :messages
   end
   
-# Add a custom route for user messages
-get 'users/:id/messages', to: 'users#messages', as: :user_messages
+  #  custom route for user messages
+
   get '/:username', to: 'users#show', as: :user
+
+  get 'users/:username/messages', to: 'users#messages', as: :user_messages
   
 
 

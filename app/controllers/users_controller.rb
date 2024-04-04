@@ -1,5 +1,5 @@
 class UsersController < ApplicationController
-  before_action :set_user
+  before_action :set_user, only: [:messages]
   before_action { authorize @user || User }
   
   def show
@@ -18,7 +18,7 @@ class UsersController < ApplicationController
   end
 
   def messages
-    @user = User.find(params[:id])
+    @user = User.find_by!(username: params.fetch(:username))
     # Fetch only matches with 'accepted' status for the user
     accepted_matches_ids = Match.where("(requester_id = :user_id OR approver_id = :user_id) AND status = 'accepted'", user_id: @user.id).pluck(:id)
     # Fetch messages related to those matches

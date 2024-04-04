@@ -39,6 +39,12 @@ class UserPolicy < ApplicationPolicy
     user == record
   end
 
+
+  def messages?
+    true
+  end
+  
+
   # Scope class for this policy
   class Scope < Scope
     def resolve
