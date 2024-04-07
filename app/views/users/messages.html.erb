@@ -1,0 +1,8 @@
+
+<h1>Messages</h1>
+
+<ul>
+  <% @messages.each do |message| %>
+    <li><%= message.body %> from <%= message.sender.username %> to <%= message.receiver.username %></li>
+  <% end %>
+</ul>

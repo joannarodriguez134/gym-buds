@@ -32,6 +32,8 @@ class Match < ApplicationRecord
 
   validate :valid_status_transition, on: :update
 
+  validate :users_must_be_different
+
 
   # Scopes
   scope :pending, -> { where(status: :pending) }
@@ -59,6 +61,12 @@ class Match < ApplicationRecord
       errors.add(:status, "can't transition from rejected")
     elsif status == 'accepted' && status_was != 'pending'
       errors.add(:status, "can only be accepted from pending state")
+    end
+  end
+
+  def users_must_be_different
+    if requester_id == approver_id
+      errors.add(:approver_id, "can't be the same as requester")
     end
   end
 

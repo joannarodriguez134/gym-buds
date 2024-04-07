@@ -15,7 +15,7 @@
 
 <h5> <b>My basics </b> </h5>
 
-<% if @user.gym_name.present? %>
+<% if @user.user_gym.present? %>
   <p> <b>The gym I go to:</b> <%= @user.gym_name %> </p>
 <% end %>
 
@@ -52,3 +52,13 @@
 <% if policy(@user).edit? %>
   <%= link_to 'Edit Profile', edit_user_registration_path, class: "btn btn-primary"%>
 <% end %>
+
+
+<div class="card" style="width: 18rem;">
+  <%= image_tag(@user.avatar, class: "img-fluid", size: "500") if @user.avatar.attached? %>
+  <div class="card-body">
+    <h5 class="card-title"><%= @user.full_name.titleize %>, <%= @user.age %></h5>
+    <p class="card-text"><b> About me</b></p>
+    <a href="#" class="btn btn-primary">Go somewhere</a>
+  </div>
+</div>

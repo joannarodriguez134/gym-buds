@@ -1,5 +1,5 @@
 class UsersController < ApplicationController
-  before_action :set_user
+  before_action :set_user, only: [:messages]
   before_action { authorize @user || User }
   
   def show
@@ -10,9 +10,30 @@ class UsersController < ApplicationController
   end
 
   def index
-    # filtering for current user to not show up in caresoul
-    @users = User.where.not(id: current_user.id)
+    # Get ids of users where there is an accepted match with the current user
+    accepted_matches_user_ids = Match.where(status: 'accepted').where("requester_id = ? OR approver_id = ?", current_user.id, current_user.id).pluck(:requester_id, :approver_id).flatten.uniq
+  
+    # Exclude the current user and users with whom they have an accepted match
+    @users = User.where.not(id: [current_user.id, *accepted_matches_user_ids])
   end
+
+  def messages
+    @user = User.find_by!(username: params[:username])
+  
+    # Fetch only matches with 'accepted' status involving the current user
+    accepted_matches_ids = Match.where(status: 'accepted')
+                                .where("requester_id = ? OR approver_id = ?", @user.id, @user.id)
+                                .pluck(:id)
+  
+    # Fetch messages related to those matches where the user is either sender or receiver
+    @messages = Message.includes(:sender, :receiver)
+                        .where(match_id: accepted_matches_ids)
+                        .where("sender_id = :user_id OR receiver_id = :user_id", user_id: @user.id)
+                        .order(created_at: :desc)
+  end
+  
+  
+  
 
   private
 

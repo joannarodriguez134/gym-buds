@@ -24,6 +24,8 @@ class MatchesController < ApplicationController
 
   # GET /matches/1 or /matches/1.json
   def show
+    # only show the accepted matches
+    @matches = Match.where(status: 'accepted').where("requester_id = ? OR approver_id = ?", @user.id, @user.id)
   end
 
   # GET /matches/new
@@ -72,6 +74,42 @@ class MatchesController < ApplicationController
       format.json { head :no_content }
     end
   end
+
+
+  def like
+    # Find the target user by username 
+    target_user = User.find_by(username: params[:username])
+  
+    # Proceed with the logic to check for existing matches or create a new one
+    existing_match = Match.find_by(requester: current_user, approver: target_user) ||
+                     Match.find_by(requester: target_user, approver: current_user)
+  
+    if existing_match
+      existing_match.update(status: 'accepted')
+    else
+      # Create a new match with 'accepted' status
+      new_match = current_user.requested_matches.build(approver: target_user, status: 'accepted')
+      new_match.save
+    end
+  end
+  
+  def reject
+   # Find the target user by username 
+   target_user = User.find_by(username: params[:username])
+  
+   # Proceed with the logic to check for existing matches or create a new one
+   existing_match = Match.find_by(requester: current_user, approver: target_user) ||
+                    Match.find_by(requester: target_user, approver: current_user)
+ 
+   if existing_match
+     existing_match.update(status: 'rejected')
+   else
+     # Create a new match with 'accepted' status
+     new_match = current_user.requested_matches.build(approver: target_user, status: 'accepted')
+     new_match.save
+   end
+  end
+  
 
   private
     def set_match

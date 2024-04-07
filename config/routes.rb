@@ -4,24 +4,29 @@ Rails.application.routes.draw do
   root "users#index"
   get "landing" => "pages#landing"
   devise_for :users
+
+  # message belongs to match
+  resources :matches do
+    resources :messages
+    member do
+      post 'like'
+      post 'reject'
+    end
+  end
   
-  resources :messages
-  resources :matches
+  #  custom route for user messages
 
   get '/:username', to: 'users#show', as: :user
 
+  get 'users/:username/messages', to: 'users#messages', as: :user_messages
+
+  put '/users/:username/like', to: 'users#like', as: 'like_user'
+  put '/users/:username/dislike', to: 'users#dislike', as: 'dislike_user'
 
   resources :users do
     collection do
       get 'discover', to: 'users#index', as: :discover_users
     end
   end
-
-
-  
-
-
-  # Define your application routes per the DSL in https://guides.rubyonrails.org/routing.html
-
   
 end

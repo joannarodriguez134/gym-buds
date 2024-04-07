@@ -6,7 +6,7 @@ require "rails/all"
 # you've limited to :test, :development, or :production.
 Bundler.require(*Rails.groups)
 
-module RailsTemplate
+module Gymbuds
   class Application < Rails::Application  
     Rails.application.config.active_storage.variant_processor = :mini_magick
     # Initialize configuration defaults for originally generated Rails version.
