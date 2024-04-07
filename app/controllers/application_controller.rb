@@ -1,6 +1,6 @@
 class ApplicationController < ActionController::Base
   skip_forgery_protection
-  include Pundit
+  include Pundit::Authorization
   before_action :authenticate_user!
   before_action :configure_permitted_parameters, if: :devise_controller?
 
