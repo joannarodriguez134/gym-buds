@@ -81,7 +81,7 @@ class MessagesController < ApplicationController
     @message = Message.find(params[:id])
   end
 
-  before_action :set_match, only: [:index, :new, :create, ...] # Add any actions that need @match
+  before_action :set_match, only: [:index, :new, :create]
 
 private
 
