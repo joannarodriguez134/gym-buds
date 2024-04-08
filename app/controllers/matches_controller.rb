@@ -77,37 +77,33 @@ class MatchesController < ApplicationController
 
 
   def like
-    # Find the target user by username 
-    target_user = User.find_by(username: params[:username])
+    target_user = User.find_by!(username: params[:username])
+    # The logic for finding or creating the match remains the same.
+    existing_match = Match.find_or_initialize_by(requester: current_user, approver: target_user) do |match|
+      match.status = 'pending'
+    end
+    
+    if existing_match.persisted? && existing_match.pending?
+      existing_match.update(status: 'accepted')
+    elsif !existing_match.persisted?
+      existing_match.save
+    end
   
-    # Proceed with the logic to check for existing matches or create a new one
+    # Redirect or respond accordingly
+  end
+  
+  
+
+  def reject
+    target_user = User.find_by!(username: params[:username])
     existing_match = Match.find_by(requester: current_user, approver: target_user) ||
                      Match.find_by(requester: target_user, approver: current_user)
   
     if existing_match
-      existing_match.update(status: 'accepted')
-    else
-      # Create a new match with 'accepted' status
-      new_match = current_user.requested_matches.build(approver: target_user, status: 'accepted')
-      new_match.save
+      existing_match.update(status: 'rejected')
     end
-  end
   
-  def reject
-   # Find the target user by username 
-   target_user = User.find_by(username: params[:username])
-  
-   # Proceed with the logic to check for existing matches or create a new one
-   existing_match = Match.find_by(requester: current_user, approver: target_user) ||
-                    Match.find_by(requester: target_user, approver: current_user)
- 
-   if existing_match
-     existing_match.update(status: 'rejected')
-   else
-     # Create a new match with 'accepted' status
-     new_match = current_user.requested_matches.build(approver: target_user, status: 'accepted')
-     new_match.save
-   end
+    # Redirect or respond accordingly
   end
   
 

@@ -8,25 +8,27 @@ Rails.application.routes.draw do
   # message belongs to match
   resources :matches do
     resources :messages
-    member do
-      put 'like'
-      put 'reject'
-    end
+    # member do
+    #   put 'like'
+    #   put 'reject'
+    # end
   end
   
-  #  custom route for user messages
+  
 
-  get '/:username', to: 'users#show', as: :user
+  put '/matches/:username/like', to: 'matches#like', as: 'like_match_by_username'
 
-  get 'users/:username/messages', to: 'users#messages', as: :user_messages
+  put '/matches/:username/reject', to: 'matches#reject', as: 'reject_match_by_username'
 
-  # put '/users/:username/like', to: 'users#like', as: 'like_user'
-  # put '/users/:username/dislike', to: 'users#dislike', as: 'dislike_user'
+   #  custom route for user messages
+   get 'users/:username/messages', to: 'users#messages', as: :user_messages
+  
+   get '/:username', to: 'users#show', as: :user
 
   resources :users do
     collection do
       get 'discover', to: 'users#index', as: :discover_users
     end
   end
-  
+
 end
