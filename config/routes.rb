@@ -9,8 +9,8 @@ Rails.application.routes.draw do
   resources :matches do
     resources :messages
     member do
-      post 'like'
-      post 'reject'
+      put 'like'
+      put 'reject'
     end
   end
   
@@ -20,8 +20,8 @@ Rails.application.routes.draw do
 
   get 'users/:username/messages', to: 'users#messages', as: :user_messages
 
-  put '/users/:username/like', to: 'users#like', as: 'like_user'
-  put '/users/:username/dislike', to: 'users#dislike', as: 'dislike_user'
+  # put '/users/:username/like', to: 'users#like', as: 'like_user'
+  # put '/users/:username/dislike', to: 'users#dislike', as: 'dislike_user'
 
   resources :users do
     collection do
