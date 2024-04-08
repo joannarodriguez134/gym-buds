@@ -54,17 +54,23 @@ unless Rails.env.production?
 
     task add_matches: :environment do
       puts "adding matches"
-
+    
       statuses = ['pending', 'accepted', 'pending']
-
+    
       5.times do |_i|
         approver = User.all.sample
         requester = User.where.not(id: approver.id).sample # Avoid the same user
-        Match.create(approver: approver, requester: requester, status: statuses.sample)
+        
+        # Check if a match between the two users already exists
+        unless Match.exists?(requester: [requester, approver], approver: [requester, approver])
+          Match.create(approver: approver, requester: requester, status: statuses.sample)
+        end
       end
+    
       p "There are now #{Match.count} matches."
       puts "done"
     end
+    
 
     task add_messages: :environment do
       puts "adding messages"
