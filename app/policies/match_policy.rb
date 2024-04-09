@@ -34,14 +34,11 @@ class MatchPolicy
     match_belongs_to_user?
   end
 
-  # Assuming like? and reject? actions might have their own authorization logic
   def like?
-    # For now, any user can like as long as they exist
     user.present?
   end
 
   def reject?
-    # Similarly, any user can reject as long as they exist
     user.present?
   end
 
