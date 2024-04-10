@@ -1,6 +1,33 @@
-<p style="color: green"><%= notice %></p>
+<!--<div class="container">
+  <div class="list-group">
+    <%# @messages_by_user.each_value do |message| %>-->
+      <%# message_user = message.sender == current_user ? message.receiver : message.sender %>
+<!--      <div class="list-group-item list-group-item-action d-flex gap-3 py-3" aria-current="true">
+        <div class="min-width-0">
+          <%#= link_to user_path(message_user) do %>-->
+            <%#= image_tag(message_user.avatar.attached? ? message_user.avatar : 'default-avatar.jpg', size: "72x72", class: "rounded-circle flex-shrink-0", alt: "#{message_user.full_name.titleize}'s avatar") %>
+          <%# end %>
+<!--        </div>
+        <a href="<%#= match_messages_path(message.match, receiver_id: message_user.id) %>" class="stretched-link"></a>
+        <div class="d-flex gap-2 w-100 justify-content-between">
+          <div>
+            <h6 class="mb-0">
+              <%#= message.sender == current_user ? "To #{message.receiver.email}" : "From #{message.sender.email}" %>-->
+<!--            </h6>
+            <p class="mb-0 opacity-75">
+              <%#= message.body %>-->
+<!--            </p>
+          </div>
+          <small class="opacity-50 text-nowrap">
+            <%#= message.created_at.strftime("%b %d, %Y %H:%M") %>-->
+<!--          </small>
+        </div>
+      </div>
+    <%# end %>-->
+<!--  </div>
+</div>
 
-<h1 class="text-center my-4">My Messages</h1>
+<%#= render 'form', message: Message.new %>-->
 
 <div class="container">
   <div class="list-group">
