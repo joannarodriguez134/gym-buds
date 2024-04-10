@@ -30,6 +30,13 @@ class MessagesController < ApplicationController
     @match = Match.find(params[:match_id])
     @message = @match.messages.build(message_params)
     @message.sender_id = current_user.id
+
+     # Determine the receiver as the other user in the match
+    @message.receiver_id = if @match.requester_id == current_user.id
+      @match.approver_id
+    else
+      @match.requester_id
+    end
     
     if @message.sender_id == @message.receiver_id
       redirect_to matches_path, alert: "Cannot send messages to yourself."
@@ -83,9 +90,7 @@ end
     @message = Message.find(params[:id])
   end
 
-  before_action :set_match, only: [:index, :new, :create]
 
-  private
   def set_match
     @match = Match.find(params[:match_id])
   rescue ActiveRecord::RecordNotFound

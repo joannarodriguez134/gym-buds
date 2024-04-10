@@ -11,19 +11,36 @@
     <%= stylesheet_link_tag "application", "data-turbo-track": "reload" %>
     <%= javascript_importmap_tags %>
   </head>
+  <style>
+    /* Add this to your application.scss */
+
+    .list-group-item-action {
+      transition: transform .2s ease-in-out;
+    }
+
+    .list-group-item-action:hover {
+      transform: scale(1.03);
+    }
+
+    .message-body {
+      color: #6c757d; /* Bootstrap's secondary text color */
+    }
+
+    /* More custom styling here as needed */
+  </style>
 
   <body>
 
     <%= render partial: "shared/navbar" %>
     <div class="container">
-       <% if notice.present? %>
+      <% if notice.present? %>
         <%= render partial: "shared/flash", locals: { message: notice, css_class: "success" } %>
       <% end %>
-      
+
       <% if alert.present? %>
         <%= render partial: "shared/flash", locals: { message: alert, css_class: "danger" } %>
       <% end %>
-      
+
       <%= yield %>
     </div>
   </body>
