@@ -1,29 +1,32 @@
 <p style="color: green"><%= notice %></p>
 
-<h1>Matches</h1>
-<%# Assuming @accepted_matches contains matches where the status is 'accepted' %>
-<% @matches.each do |match| %>
-  <%# Determine the "other" user in each match %>
-  <% other_user = match.requester == current_user ? match.approver : match.requester %>
+<h1>Your Matches</h1>
 
-
-   <% if other_user.avatar.attached? %>
-    <%= link_to user_path(other_user.username) do %>
-            <%= image_tag(other_user.avatar, size:"100", class: "rounded-circle", alt: "#{other_user.full_name.titleize}'s avatar") %>
-    <% end %>
+<div class="row">
+  <%# Loop through each accepted match %>
+  <% @matches.each do |match| %>
+    <% other_user = match.requester == current_user ? match.approver : match.requester %>
+    <div class="col-md-4 mb-3">
+      <div class="card">
+        <div class="card-header">
+          <%= other_user.full_name.titleize %>
+        </div>
+        <div class="card-body text-center">
+          <% if other_user.avatar.attached? %>
+            <%= link_to user_path(other_user.username) do %>
+              <%= image_tag(other_user.avatar, size: "100x100", class: "rounded-circle", alt: "#{other_user.full_name.titleize}'s avatar") %>
+            <% end %>
           <% else %>
-    <%= link_to user_path(other_user.username) do %>
-            <%= image_tag('default-avatar.jpg', class: "rounded-circle", size:"100", alt: "Default avatar") %>
-    <% end %>
+            <%= link_to user_path(other_user.username) do %>
+              <%= image_tag('default-avatar.jpg', size: "100x100", class: "rounded-circle", alt: "Default avatar") %>
+            <% end %>
           <% end %>
-  
-  <div class="match">
-    <div>
-      <%# Display information about the other user %>
-      <h4><%= other_user.full_name.titleize %></h4>
-
-      <%#= link_to 'Send a message', match_message_path(match), class: "btn btn-primary" %>
-
+          <div class="mt-3">
+            <%= link_to 'View Profile', user_path(other_user.username), class: "btn btn-info" %>
+            <%= link_to 'Send Message', match_messages_path(match), class: "btn btn-primary" %>
+          </div>
+        </div>
+      </div>
     </div>
-  </div>
-<% end %>
+  <% end %>
+</div>

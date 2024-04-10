@@ -32,24 +32,26 @@ class MessagesController < ApplicationController
     @message.sender_id = current_user.id
     
     if @message.sender_id == @message.receiver_id
-      redirect_to some_path, alert: "Cannot send messages to yourself."
+      redirect_to matches_path, alert: "Cannot send messages to yourself."
       return
     end
   
     if @match.status != 'accepted' || (@match.requester_id != current_user.id && @match.approver_id != current_user.id)
-      redirect_to some_path, alert: "Not authorized to send messages."
+      redirect_to matches_path, alert: "Not authorized to send messages."
       return
     end
     
-    if @message.save
-      redirect_to match_messages_path(@match), notice: 'Your changes have been saved.'
-    else
-      render :new
-    end
-  end
-  
-  
-  
+    respond_to do |format|
+      if @message.save
+        format.html { redirect_to match_messages_path(@match), notice: "Message was successfully sent." }
+        format.json { render :show, status: :created, location: @message }
+      else
+        format.html { render :new, status: :unprocessable_entity }
+        format.json { render json: @message.errors, status: :unprocessable_entity }
+      end
+    end    
+end
+
 
   # PATCH/PUT /messages/1 or /messages/1.json
   def update
@@ -83,17 +85,16 @@ class MessagesController < ApplicationController
 
   before_action :set_match, only: [:index, :new, :create]
 
-private
-
-def set_match
-  @match = Match.find(params[:match_id])
-rescue ActiveRecord::RecordNotFound
-  redirect_to(root_path, alert: "Match not found.")
-end
+  private
+  def set_match
+    @match = Match.find(params[:match_id])
+  rescue ActiveRecord::RecordNotFound
+    redirect_to(root_path, alert: "Match not found.")
+  end
 
 
   # Only allow a list of trusted parameters through.
-  private
+
   def message_params
     params.require(:message).permit(:body, :receiver_id)
   end
