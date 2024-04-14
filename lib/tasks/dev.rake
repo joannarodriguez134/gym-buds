@@ -10,8 +10,8 @@ unless Rails.env.production?
 
     task add_users: :environment do
       puts "adding users..."
-      names = ["alice", "cameron", "chelsea", "nick", "danny", "sam", "jenny", "bob"]
-      last_names = ["smith", "jones", "milan", "castillo"]
+      names = ["alice", "cameron", "chelsea", "nick", "danny", "sam", "jenny", "bob", "camila", "kim", "mack", "jackie"]
+      last_names = ["smith", "jones", "milan", "castillo", "hernandez"]
       genders = ['male', 'female', 'nonbinary']
       gym_frequencies = ['daily', 'twice_a_week', 'multiple_times_a_week', 'weekly', 'every_two_weeks', 'occasionally', 'rarely']
       ideal_match_genders = ['male', 'female', 'nonbinary']
@@ -54,32 +54,47 @@ unless Rails.env.production?
 
     task add_matches: :environment do
       puts "adding matches"
-
+    
       statuses = ['pending', 'accepted', 'pending']
-
+    
       5.times do |_i|
         approver = User.all.sample
         requester = User.where.not(id: approver.id).sample # Avoid the same user
-        Match.create(approver: approver, requester: requester, status: statuses.sample)
+        
+        # Check if a match between the two users already exists
+        unless Match.exists?(requester: [requester, approver], approver: [requester, approver])
+          Match.create(approver: approver, requester: requester, status: statuses.sample)
+        end
       end
+    
       p "There are now #{Match.count} matches."
       puts "done"
     end
+    
 
     task add_messages: :environment do
       puts "adding messages"
       Match.all.each do |match|
         rand(1..4).times do
+          # Decide who is sender and who is receiver. This ensures they are always different.
+          if [true, false].sample
+            sender_id = match.requester_id
+            receiver_id = match.approver_id
+          else
+            sender_id = match.approver_id
+            receiver_id = match.requester_id
+          end
+    
           Message.create(
             match: match,
-            sender_id: [match.requester_id, match.approver_id].sample,
-            receiver_id: [match.requester_id, match.approver_id].sample,
+            sender_id: sender_id,
+            receiver_id: receiver_id,
             body: Faker::TvShows::BigBangTheory.quote
           )
         end
       end
       p "There are now #{Message.count} messages."
       puts "done"
-    end
-  end
+    end    
+  end    
 end

@@ -4,10 +4,23 @@ class MessagesController < ApplicationController
   before_action { authorize (@message || Message) }
 
   # GET /messages or /messages.json
-  def index
-    @match = Match.find(params[:match_id])
-    # @messages = Message.where("sender_id = ? OR receiver_id = ?", current_user.id, current_user.id).order(created_at: :desc)
-    @messages = Message.for_user_in_accepted_matches(current_user.id).order(created_at: :desc)
+  # def index
+  #   @match = Match.find(params[:match_id])
+  #   raw_messages = Message.for_user_in_accepted_matches(current_user.id).includes(:sender, :receiver).order(created_at: :desc)
+  
+  #   # This groups messages by the conversation partner, ensuring a unique list of users
+  #   @messages_by_user = raw_messages.each_with_object({}) do |message, hash|
+  #     other_user_id = message.sender_id == current_user.id ? message.receiver_id : message.sender_id
+  #     hash[other_user_id] = message unless hash.key?(other_user_id)
+  #   end
+  # end  
+
+ 
+    def index
+      @match = Match.find(params[:match_id])
+  
+      @messages = @match.messages.order(created_at: :asc)
+      @new_message = Message.new
   end
 
   # GET /messages/1 or /messages/1.json
@@ -30,26 +43,35 @@ class MessagesController < ApplicationController
     @match = Match.find(params[:match_id])
     @message = @match.messages.build(message_params)
     @message.sender_id = current_user.id
+
+     # Determine the receiver as the other user in the match
+    @message.receiver_id = if @match.requester_id == current_user.id
+      @match.approver_id
+    else
+      @match.requester_id
+    end
     
     if @message.sender_id == @message.receiver_id
-      redirect_to some_path, alert: "Cannot send messages to yourself."
+      redirect_to matches_path, alert: "Cannot send messages to yourself."
       return
     end
   
     if @match.status != 'accepted' || (@match.requester_id != current_user.id && @match.approver_id != current_user.id)
-      redirect_to some_path, alert: "Not authorized to send messages."
+      redirect_to matches_path, alert: "Not authorized to send messages."
       return
     end
     
-    if @message.save
-      redirect_to match_messages_path(@match), notice: 'Your changes have been saved.'
-    else
-      render :new
-    end
-  end
-  
-  
-  
+    respond_to do |format|
+      if @message.save
+        format.html { redirect_to match_messages_path(@match), notice: "Message was successfully sent." }
+        format.json { render :show, status: :created, location: @message }
+      else
+        format.html { render :new, status: :unprocessable_entity }
+        format.json { render json: @message.errors, status: :unprocessable_entity }
+      end
+    end    
+end
+
 
   # PATCH/PUT /messages/1 or /messages/1.json
   def update
@@ -81,19 +103,16 @@ class MessagesController < ApplicationController
     @message = Message.find(params[:id])
   end
 
-  before_action :set_match, only: [:index, :new, :create]
 
-private
-
-def set_match
-  @match = Match.find(params[:match_id])
-rescue ActiveRecord::RecordNotFound
-  redirect_to(root_path, alert: "Match not found.")
-end
+  def set_match
+    @match = Match.find(params[:match_id])
+  rescue ActiveRecord::RecordNotFound
+    redirect_to(root_path, alert: "Match not found.")
+  end
 
 
   # Only allow a list of trusted parameters through.
-  private
+
   def message_params
     params.require(:message).permit(:body, :receiver_id)
   end

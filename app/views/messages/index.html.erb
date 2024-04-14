@@ -1,19 +1,33 @@
-<p style="color: green"><%= notice %></p>
 
-<h1>My Messages</h1>
-
-<ul>
-  <% @messages.each do |message| %>
-    <li>
+<div class="container">
+  <div class="list-group">
+    <% @messages.each do |message| %>
       <% if message.sender == current_user %>
-        To <%= message.receiver.email %>: <%= message.body %>
+        <div class="list-group-item list-group-item-action d-flex flex-column align-items-end message-bubble sent-by-user">
+          <p class="mb-0">
+            <%= message.body %>
+          </p>
+          <small class="timestamp">
+            <%= message.created_at.strftime("%b %d, %Y %H:%M") %>
+          </small>
+        </div>
       <% else %>
-        From <%= message.sender.email %>: <%= message.body %>
+        <div class="list-group-item list-group-item-action d-flex flex-column align-items-start message-bubble received-message">
+          <b><%= message.sender.username %></b>
+          <% if message.sender.avatar.attached? %>
+            <%= image_tag(message.sender.avatar, size: "30x30", class: "rounded-circle flex-shrink-0", alt: "#{message.sender.full_name.titleize}'s avatar") %>
+            
+          <% end %>
+          <p class="mb-0">
+            <%= message.body %>
+          </p>
+          <small class="timestamp">
+            <%= message.created_at.strftime("%b %d, %Y %H:%M") %>
+          </small>
+        </div>
       <% end %>
-      <small><%= message.created_at.strftime("%b %d, %Y %H:%M") %></small>
-    </li>
-  <% end %>
-</ul>
+    <% end %>
+  </div>
+</div>
 
-
-<%= link_to "New message", new_message_path %>
+<%= render 'form', message: Message.new %>

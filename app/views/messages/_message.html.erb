@@ -1,22 +1,7 @@
-<div id="<%= dom_id message %>">
-  <p>
-    <strong>Body:</strong>
-    <%= message.body %>
-  </p>
-
-  <p>
-    <strong>Match:</strong>
-    <%= message.match_id %>
-  </p>
-
-  <p>
-    <strong>Sender:</strong>
-    <%= message.sender_id %>
-  </p>
-
-  <p>
-    <strong>Receiver:</strong>
-    <%= message.receiver_id %>
-  </p>
-
-</div>
+<li>
+  <div class="row">
+    <div class="<%= user.id == message.user_id ? 'message-sent' : 'message-received' %>">
+      <%= message.body %>
+    </div>
+  </div>
+</li>

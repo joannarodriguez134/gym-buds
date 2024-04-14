@@ -28,6 +28,7 @@ class Match < ApplicationRecord
   # Scope for accepted matches
   scope :accepted, -> { where(status: 'accepted') }
 
+  # TODO: update status column to default to "pending"
   enum status: { pending: 'pending', accepted: 'accepted', rejected: 'rejected' }
 
   validate :valid_status_transition, on: :update

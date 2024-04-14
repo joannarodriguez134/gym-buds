@@ -34,6 +34,14 @@ class MatchPolicy
     match_belongs_to_user?
   end
 
+  def like?
+    user.present?
+  end
+
+  def reject?
+    user.present?
+  end
+
   private
 
   def match_belongs_to_user?

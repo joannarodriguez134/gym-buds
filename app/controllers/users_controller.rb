@@ -1,5 +1,6 @@
 class UsersController < ApplicationController
   before_action :set_user, only: [:messages]
+  before_action :authorize_user, only: [:messages]
   before_action { authorize @user || User }
   
   def show
@@ -18,18 +19,16 @@ class UsersController < ApplicationController
   end
 
   def messages
-    @user = User.find_by!(username: params[:username])
-  
-    # Fetch only matches with 'accepted' status involving the current user
-    accepted_matches_ids = Match.where(status: 'accepted')
-                                .where("requester_id = ? OR approver_id = ?", @user.id, @user.id)
-                                .pluck(:id)
-  
-    # Fetch messages related to those matches where the user is either sender or receiver
-    @messages = Message.includes(:sender, :receiver)
-                        .where(match_id: accepted_matches_ids)
-                        .where("sender_id = :user_id OR receiver_id = :user_id", user_id: @user.id)
-                        .order(created_at: :desc)
+    # Assuming @user is set by `set_user` and it's the current user
+    @user = current_user
+    
+    # Find all matches for the current user that are accepted
+    matches = Match.where(status: 'accepted').where("requester_id = :user_id OR approver_id = :user_id", user_id: @user.id)
+    
+    # For each match, get the most recent message
+    @messages = matches.map do |match|
+      match.messages.order(created_at: :desc).first
+    end.compact # compact to remove nil entries if any matches have no messages
   end
   
   
@@ -48,6 +47,12 @@ class UsersController < ApplicationController
       @user = User.find_by!(username: params.fetch(:username))
     else
       @user = current_user
+    end
+  end
+
+  def authorize_user
+    unless current_user == @user
+      redirect_to root_path, alert: "You are not authorized to view these messages."
     end
   end
 end

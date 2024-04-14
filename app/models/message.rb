@@ -43,8 +43,10 @@ class Message < ApplicationRecord
   end
 
   def self.accepted_between(user1_id, user2_id)
-    accepted.where(requester_id: user1_id, approver_id: user2_id)
-            .or(accepted.where(requester_id: user2_id, approver_id: user1_id))
+    joins(:match)
+      .where(matches: { status: 'accepted' })
+      .where("(messages.sender_id = :user1_id AND messages.receiver_id = :user2_id) OR (messages.sender_id = :user2_id AND messages.receiver_id = :user1_id)", user1_id: user1_id, user2_id: user2_id)
   end
+  
 
 end

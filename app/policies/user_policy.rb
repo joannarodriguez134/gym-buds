@@ -41,7 +41,7 @@ class UserPolicy < ApplicationPolicy
 
 
   def messages?
-    true
+    user == record
   end
   
 

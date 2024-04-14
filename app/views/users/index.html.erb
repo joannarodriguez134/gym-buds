@@ -14,9 +14,17 @@
                 <h5 class="card-title"><%= user.full_name.titleize %></h5>
                 <p class="card-text"> <%= user.bio  %> </p>
                 <%= link_to 'View profile', user_path(user.username), class: "btn btn-primary" %>
-                <!-- Like and Dislike buttons -->
-                <%= link_to 'Like', like_user_path(user.username), method: :put, remote: true, class: "btn btn-success" %>
-                <%= link_to 'Dislike', dislike_user_path(user.username), method: :put, remote: true, class: "btn btn-danger" %>
+                
+                <!-- Like Button -->
+                <%= form_with url: like_match_by_username_path(username: user.username), method: :put do |form| %>
+                  <%= form.submit 'Like', class: "btn btn-success" %>
+                <% end %>
+
+                <!-- Reject (Dislike) Button -->
+                <%= form_with url: reject_match_by_username_path(username: user.username), method: :put do |form| %>
+                  <%= form.submit 'Reject', class: "btn btn-danger" %>
+                <% end %>
+
               </div>
             </div>
           </div>

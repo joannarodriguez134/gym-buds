@@ -11,19 +11,71 @@
     <%= stylesheet_link_tag "application", "data-turbo-track": "reload" %>
     <%= javascript_importmap_tags %>
   </head>
+  <style>
+    /* Add this to your application.scss */
+
+    .list-group-item-action {
+      transition: transform .2s ease-in-out;
+    }
+
+    .list-group-item-action:hover {
+      transform: scale(1.03);
+    }
+
+    .message-body {
+      color: #6c757d; /* Bootstrap's secondary text color */
+    }
+
+       /* app/assets/stylesheets/application.css */
+    /* Chat bubble layout */
+    .chat-left {
+    text-align: left;
+    justify-content: flex-start;
+    }
+
+    .chat-right {
+    text-align: right;
+    justify-content: flex-end;
+    }
+
+    .chat-bubble {
+    display: flex;
+    padding: 10px 15px;
+    border-radius: 15px;
+    margin-bottom: 10px;
+    background-color: #f0f0f0; /* Light gray for others */
+    max-width: 70%;
+    }
+
+    .chat-bubble.me {
+    background-color: #007bff; /* Blue for current user */
+    color: white;
+    align-self: flex-end;
+    }
+
+    .timestamp {
+    font-size: 0.75rem;
+    margin-top: 5px;
+    color: rgba(0, 0, 0, 0.45);
+    }
+
+    .chat-bubble.me .timestamp {
+    color: rgba(255, 255, 255, 0.75);
+    }
+  </style>
 
   <body>
 
     <%= render partial: "shared/navbar" %>
     <div class="container">
-       <% if notice.present? %>
+      <% if notice.present? %>
         <%= render partial: "shared/flash", locals: { message: notice, css_class: "success" } %>
       <% end %>
-      
+
       <% if alert.present? %>
         <%= render partial: "shared/flash", locals: { message: alert, css_class: "danger" } %>
       <% end %>
-      
+
       <%= yield %>
     </div>
   </body>
