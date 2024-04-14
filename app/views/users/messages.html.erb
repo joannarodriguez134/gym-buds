@@ -1,8 +1,29 @@
 
-<h1>Messages</h1>
 
-<ul>
-  <% @messages.each do |message| %>
-    <li><%= message.body %> from <%= message.sender.username %> to <%= message.receiver.username %></li>
-  <% end %>
-</ul>
+<div class="container">
+  <div class="list-group">
+    <% @messages.each do |message| %>
+      <% message_user = message.sender == current_user ? message.receiver : message.sender %>
+      <% match = message.match %>
+      <a href="<%= match_messages_path(match) %>" class="list-group-item list-group-item-action d-flex gap-3 py-3" aria-current="true">
+        <div class="min-width-0">
+          <%= image_tag(message_user.avatar.attached? ? message_user.avatar : 'default-avatar.jpg', size: "72x72", class: "rounded-circle flex-shrink-0", alt: "#{message_user.full_name.titleize}'s avatar") %>
+        </div>
+        <div class="d-flex gap-2 w-100 justify-content-between">
+          <div>
+            <h6 class="mb-0">
+              <%= message.sender == current_user ? "To #{message_user.email}" : "From #{message_user.email}" %>
+            </h6>
+            <p class="mb-0 opacity-75">
+              <%= message.body %>
+            </p>
+          </div>
+          <small class="opacity-50 text-nowrap">
+            <%= message.created_at.strftime("%b %d, %Y %H:%M") %>
+          </small>
+        </div>
+      </a>
+    <% end %>
+  </div>
+</div>
+
