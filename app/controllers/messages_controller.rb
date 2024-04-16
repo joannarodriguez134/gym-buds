@@ -4,18 +4,7 @@ class MessagesController < ApplicationController
   before_action { authorize (@message || Message) }
 
   # GET /messages or /messages.json
-  # def index
-  #   @match = Match.find(params[:match_id])
-  #   raw_messages = Message.for_user_in_accepted_matches(current_user.id).includes(:sender, :receiver).order(created_at: :desc)
-  
-  #   # This groups messages by the conversation partner, ensuring a unique list of users
-  #   @messages_by_user = raw_messages.each_with_object({}) do |message, hash|
-  #     other_user_id = message.sender_id == current_user.id ? message.receiver_id : message.sender_id
-  #     hash[other_user_id] = message unless hash.key?(other_user_id)
-  #   end
-  # end  
 
- 
     def index
       @match = Match.find(params[:match_id])
   
@@ -65,6 +54,7 @@ class MessagesController < ApplicationController
       if @message.save
         format.html { redirect_to match_messages_path(@match), notice: "Message was successfully sent." }
         format.json { render :show, status: :created, location: @message }
+        ActionCable.server.broadcast("match_#{@message.match_id}", message: render_message(@message))
       else
         format.html { render :new, status: :unprocessable_entity }
         format.json { render json: @message.errors, status: :unprocessable_entity }
@@ -116,5 +106,8 @@ end
   def message_params
     params.require(:message).permit(:body, :receiver_id)
   end
-  
+
+def render_message(message)
+  ApplicationController.renderer.render(partial: 'messages/message', locals: { message: message })
+  end
 end

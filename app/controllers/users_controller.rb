@@ -19,7 +19,6 @@ class UsersController < ApplicationController
   end
 
   def messages
-    # Assuming @user is set by `set_user` and it's the current user
     @user = current_user
     
     # Find all matches for the current user that are accepted
@@ -27,7 +26,7 @@ class UsersController < ApplicationController
     
     # For each match, get the most recent message
     @messages = matches.map do |match|
-      match.messages.order(created_at: :desc).first
+      match.messages.order(updated_at: :desc).first
     end.compact # compact to remove nil entries if any matches have no messages
   end
   

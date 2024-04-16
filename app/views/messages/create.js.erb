@@ -1,0 +1,12 @@
+<% if @message.persisted? %>
+  console.log("Adding new message to the DOM");
+  var newMessage = $("<%= j(render @message) %>");
+  newMessage.hide();
+  $('#messages').append(newMessage);
+  newMessage.slideDown();
+  $('textarea').val('');
+<% else %>
+  console.log("Handling errors");
+  $("#error_explanation").html("<%= j render 'shared/error_messages', object: @message %>");
+<% end %>
+
