@@ -52,9 +52,10 @@ class MessagesController < ApplicationController
     
     respond_to do |format|
       if @message.save
-        format.html { redirect_to match_messages_path(@match), notice: "Message was successfully sent." }
+        format.html { redirect_to match_messages_path(@match,:anchor => "wall"), notice: "Message was successfully sent." }
         format.json { render :show, status: :created, location: @message }
-        ActionCable.server.broadcast("match_#{@message.match_id}", message: render_message(@message))
+        # ActionCable.server.broadcast "match_#{@message.match_id}", message: render_message(message)
+        format.js
       else
         format.html { render :new, status: :unprocessable_entity }
         format.json { render json: @message.errors, status: :unprocessable_entity }
@@ -107,7 +108,8 @@ end
     params.require(:message).permit(:body, :receiver_id)
   end
 
-def render_message(message)
-  ApplicationController.renderer.render(partial: 'messages/message', locals: { message: message })
-  end
+#   def render_message(message)
+#   ApplicationController.renderer.render(partial: 'messages/message', locals: { message: @message })
+# end
+
 end

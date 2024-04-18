@@ -7,5 +7,5 @@ window.jQuery = jquery;
 window.$ = jquery;
 import Rails from "@rails/ujs"
 Rails.start();
-import "channels"
-import "message_form"
+// import "channels"
+// import "message_form"
