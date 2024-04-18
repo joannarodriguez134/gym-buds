@@ -1,0 +1,14 @@
+<% if @message.persisted? %>
+  console.log("Adding new message to the DOM");
+  var newMessage = $("<%= j(render @message) %>");
+  $('#messages').append(newMessage);
+
+  newMessage.slideDown(function() {
+    var messagesContainer = $('#messages');
+    messagesContainer.scrollTop(messagesContainer.prop('scrollHeight'));
+  });
+
+  $('#new_message_form textarea').val(''); // Clear the text area after message is added
+<% else %>
+  console.log("Message not sent");
+<% end %>

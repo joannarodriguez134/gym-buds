@@ -1,7 +1,13 @@
 <li>
   <div class="row">
-    <div class="<%= user.id == message.user_id ? 'message-sent' : 'message-received' %>">
-      <%= message.body %>
-    </div>
+    <% if message.sender_id == current_user.id %>
+      <div class="message-sent">
+        <%= message.body %>
+      </div>
+    <% else %>
+      <div class="message-received">
+        <%= message.body %>
+      </div>
+    <% end %>
   </div>
 </li>

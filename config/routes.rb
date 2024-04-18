@@ -1,17 +1,13 @@
 Rails.application.routes.draw do
 
   # Defines the root path route ("/")
-  root "users#index"
-  get "landing" => "pages#landing"
+  root "pages#home"
+  get "home" => "pages#home"
   devise_for :users
 
   # message belongs to match
   resources :matches do
     resources :messages
-    # member do
-    #   put 'like'
-    #   put 'reject'
-    # end
   end
   
   

@@ -1,6 +1,6 @@
-<nav class="navbar navbar-expand-lg navbar-light bg-light mb-4">
+<nav class="navbar navbar-expand-lg navbar-light mb-4" style="background-color: #EF8354;">
   <div class="container">
-    <%= link_to "Discover", discover_users_users_path, class: "navbar-brand" %>
+    <%= link_to "Discover", discover_users_users_path, class: "navbar-brand text-white" %>
 
     <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarSupportedContent" aria-controls="navbarSupportedContent" aria-expanded="false" aria-label="Toggle navigation">
       <span class="navbar-toggler-icon"></span>
@@ -10,12 +10,12 @@
       <ul class="navbar-nav mr-auto">
         <% if user_signed_in? %>
           <li class="nav-item">
-            <%= link_to matches_path, class: "nav-link" do %>
+            <%= link_to matches_path, class: "nav-link text-white" do %>
               <i class="fas fa-users fa-fw"></i> Matches
             <% end %>
           </li>
           <li class="nav-item">
-            <%= link_to user_messages_path(current_user.username), class: "nav-link" do %>
+            <%= link_to user_messages_path(current_user.username), class: "nav-link text-white" do %>
               <i class="fas fa-envelope fa-fw"></i> Messages
             <% end %>
           </li>
@@ -24,31 +24,26 @@
     </div>
     <ul class="navbar-nav">
       <% if user_signed_in? %>
-        <!--<li class="nav-item">-->
-          <%#= link_to new_match_message_path(@match), class: "nav-link" do %>
-<!--            <i class="fas fa-plus-circle"></i> Add new message-->
-          <%# end %>
-        <!--</li>-->
         <li class="nav-item">
-          <%= link_to user_path(current_user.username), class: "nav-link" do %>
+          <%= link_to user_path(current_user.username), class: "nav-link text-white" do %>
             <i class="fas fa-home fa-fw"></i> Your profile
           <% end %>
         </li>
         <li class="nav-item dropdown">
-          <a class="nav-link dropdown-toggle" href="#" id="navbarDropdown" role="button" data-bs-toggle="dropdown" aria-expanded="false">
+          <a class="nav-link dropdown-toggle text-white" href="#" id="navbarDropdown" role="button" data-bs-toggle="dropdown" aria-expanded="false">
             <%= current_user.username %>
           </a>
           <div class="dropdown-menu" aria-labelledby="navbarDropdown">
-            <%= link_to "Edit profile", edit_user_registration_path, class: "dropdown-item" %>
-            <%= button_to "Sign out", destroy_user_session_path, method: :delete, class: "dropdown-item" %>
+            <%= link_to "Edit profile", edit_user_registration_path, class: "dropdown-item text-white" %>
+            <%= button_to "Sign out", destroy_user_session_path, method: :delete, class: "dropdown-item text-white" %>
           </div>
         </li>
       <% else %>
         <li class="nav-item">
-          <%= link_to "Sign in", new_user_session_path, class: "nav-link" %>
+          <%= link_to "Sign in", new_user_session_path, class: "nav-link text-white" %>
         </li>
         <li class="nav-item">
-          <%= link_to "Sign up", new_user_registration_path, class: "nav-link" %>
+          <%= link_to "Sign up", new_user_registration_path, class: "nav-link text-white" %>
         </li>
       <% end %>
     </ul>

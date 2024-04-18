@@ -24,7 +24,7 @@
 }
 
 .sent-by-user {
-  background-color: #dcf8c6; /* Light green, commonly used for "sent" messages */
+  background-color: #80caa6; /* Light green, commonly used for "sent" messages */
   align-self: flex-end;
   text-align: right;
 }
@@ -44,10 +44,6 @@
   margin-right: 10px;
 }
 
-
-/* app/assets/stylesheets/application.css */
-
-/* Styles for message form */
 .message-form {
   background: #f9f9f9;
   padding: 20px;
@@ -97,3 +93,20 @@
   margin-bottom: 20px;
 }
 
+#messages {
+  max-height: 500px; 
+  overflow-y: auto;
+}
+
+
+.card-smaller {
+  width: 75%; 
+  margin: 0 auto; /* Centers the card in the carousel item */
+  padding: 10px;
+}
+
+
+.img-smaller {
+  max-width: 100%; /* Limit image width to not exceed the container width */
+  height: auto; /* Maintain aspect ratio */
+}
