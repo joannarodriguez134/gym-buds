@@ -5,31 +5,35 @@ class MessagesController < ApplicationController
 
   # GET /messages or /messages.json
 
-  #   def index
-  #     @match = Match.find(params[:match_id])
+    def index
+      @match = Match.find(params[:match_id])
   
-  #     @messages = @match.messages.order(created_at: :asc)
-  #     @new_message = Message.new
-  # end
+      pagy_messages = @match.messages.order(created_at: :desc)
+      @pagy, @messages = pagy(pagy_messages, items: 20)
 
-  def index
-    @match = Match.find(params[:match_id])
-    @new_message = Message.new
+      @messages = message.reverse
+      @new_message = Message.new
+
+  end
+
+  # def index
+  #   @match = Match.find(params[:match_id])
+  #   @new_message = Message.new
   
-    # Determine offset based on page or last message ID
-    if params[:last_message_id]
-      # Fetch older messages than the one specified
-      @messages = @match.messages.where("id < ?", params[:last_message_id]).order(created_at: :asc).limit(20)
-    else
-      # Fetch the last 20 messages, but we'll reverse them in the view to show the most recent at the bottom
-      @messages = @match.messages.order(created_at: :desc).limit(20)
-    end
+  #   # Determine offset based on page or last message ID
+  #   if params[:last_message_id]
+  #     # Fetch older messages than the one specified
+  #     @messages = @match.messages.where("id < ?", params[:last_message_id]).order(created_at: :asc).limit(20)
+  #   else
+  #     # Fetch the last 20 messages, but we'll reverse them in the view to show the most recent at the bottom
+  #     @messages = @match.messages.order(created_at: :desc).limit(20)
+  #   end
 
-    respond_to do |format|
-      format.html { render :index }
-      format.js
-    end
-  end  
+  #   respond_to do |format|
+  #     format.html { render :index }
+  #     format.js
+  #   end
+  # end  
   
 
 
