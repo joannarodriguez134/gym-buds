@@ -24,13 +24,13 @@
 }
 
 .sent-by-user {
-  background-color: #80caa6; /* Light green, commonly used for "sent" messages */
+  background-color: #80caa6;
   align-self: flex-end;
   text-align: right;
 }
 
 .received-message {
-  background-color: #ffffff; /* White, commonly used for "received" messages */
+  background-color: #ffffff;
   align-self: flex-start;
   text-align: left;
 }

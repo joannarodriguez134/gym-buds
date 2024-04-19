@@ -1,0 +1,27 @@
+document.addEventListener("DOMContentLoaded", function() {
+  var messageList = document.querySelector('.list-group');
+
+  // Ensure that there's actually a message list on the page to attach the event
+  if (messageList) {
+    messageList.addEventListener('scroll', function() {
+      if (messageList.scrollTop === 0) {
+        var firstMessageId = document.querySelector('.list-group-item').getAttribute('data-message-id');
+        // Ensure matchId is dynamically retrieved or correctly set
+        var matchId = window.location.pathname.split('/')[2]; // Assuming URL pattern /matches/:match_id/messages
+
+        fetch(`/matches/${matchId}/messages?last_message_id=${firstMessageId}`, {
+          credentials: 'include' // Ensure cookies/session are included if needed for authentication
+        })
+          .then(response => response.text())
+          .then(function(html) {
+            // Prepend fetched messages to the list
+            messageList.innerHTML = html + messageList.innerHTML;
+          })
+          .catch(error => console.error('Failed to load messages:', error));
+      }
+    });
+  } else {
+    console.log("Message list element not found.");
+  }
+});
+
