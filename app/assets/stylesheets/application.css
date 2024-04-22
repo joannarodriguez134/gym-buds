@@ -15,6 +15,12 @@
  */
 
 /* app/assets/stylesheets/application.css or in an appropriate stylesheet file */
+
+.bg-orange {
+  background-color: #EF8354;
+  color: #ffffff;
+}
+
 .message-bubble {
   padding: 10px 15px;
   border-radius: 20px;

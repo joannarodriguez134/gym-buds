@@ -78,19 +78,27 @@ class MatchesController < ApplicationController
 
   def like
     target_user = User.find_by!(username: params[:username])
-    # The logic for finding or creating the match remains the same.
-    existing_match = Match.find_or_initialize_by(requester: current_user, approver: target_user) do |match|
-      match.status = 'pending'
-    end
-    
-    if existing_match.persisted? && existing_match.pending?
-      existing_match.update(status: 'accepted')
-    elsif !existing_match.persisted?
-      existing_match.save
-    end
+    existing_match = Match.find_or_initialize_by(requester: current_user, approver: target_user)
   
-    # Redirect or respond accordingly
+    respond_to do |format|
+      if existing_match.new_record?
+        existing_match.status = 'pending'
+        existing_match.save
+        format.js
+      elsif existing_match.pending?
+        existing_match.update(status: 'accepted')
+        if Match.exists?(requester_id: target_user.id, approver_id: current_user.id, status: 'accepted')
+          format.js { render 'mutual_match.js.erb' }  # This file will trigger the modal
+        else
+          format.js
+        end
+      else
+        format.js
+      end
+    end
   end
+  
+   
   
   
 
