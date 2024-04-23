@@ -54,16 +54,19 @@ class MatchesController < ApplicationController
 
   # PATCH/PUT /matches/1 or /matches/1.json
   def update
-    respond_to do |format|
-      if @match.update(match_params)
-        format.html { redirect_to match_url(@match), notice: "Match was successfully updated." }
-        format.json { render :show, status: :ok, location: @match }
-      else
-        format.html { render :edit, status: :unprocessable_entity }
-        format.json { render json: @match.errors, status: :unprocessable_entity }
+    if @match.update(match_params)
+      if @match.accepted?
+        MatchChannel.broadcast_to(
+          @match.approver,
+          { match_id: @match.id, status: 'accepted', message: 'Your match has been accepted!' }
+        )
       end
+      redirect_to match_url(@match), notice: "Match was successfully updated."
+    else
+      render :edit, status: :unprocessable_entity
     end
   end
+  
 
   # DELETE /matches/1 or /matches/1.json
   def destroy
@@ -88,7 +91,7 @@ class MatchesController < ApplicationController
       elsif existing_match.pending?
         existing_match.update(status: 'accepted')
         if Match.exists?(requester_id: target_user.id, approver_id: current_user.id, status: 'accepted')
-          format.js { render 'mutual_match.js.erb' }  # This file will trigger the modal
+          format.js { render 'mutual_match.js.erb' }
         else
           format.js
         end

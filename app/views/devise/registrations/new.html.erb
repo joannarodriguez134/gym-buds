@@ -1,82 +1,87 @@
+<h2 class="card-header">
+Create an account
+</h2>
 
-<h5 class="card-header">
-        <%= resource_name != "user" ? resource_name.to_s.titleize : "" %> Sign Up
-      </h5>
-
-<%= simple_form_for(resource, as: resource_name, url: registration_path(resource_name), html: { multipart: true }) do |f| %>
+<%= simple_form_for(resource, as: resource_name, url: registration_path(resource_name), html: { class: 'needs-validation', novalidate: true, multipart: true }) do |f| %>
   <%= f.error_notification %>
 
   <div class="form-inputs">
 
-  <!--login info-->
-    <%= f.input :username, required: true %>
+    <!-- Login info -->
+    <%= f.input :username, required: true, wrapper_html: { class: 'mb-3' }, input_html: { class: 'form-control' } %>
 
     <%= f.input :email,
                 required: true,
                 autofocus: true,
-                input_html: { autocomplete: "email" } %>
+                input_html: { autocomplete: "email", class: 'form-control' },
+                wrapper_html: { class: 'mb-3' } %>
     <%= f.input :password,
                 required: true,
                 hint: ("#{@minimum_password_length} characters minimum" if @minimum_password_length),
-                input_html: { autocomplete: "new-password" } %>
+                input_html: { autocomplete: "new-password", class: 'form-control' },
+                wrapper_html: { class: 'mb-3' } %>
     <%= f.input :password_confirmation,
                 required: true,
-                input_html: { autocomplete: "new-password" } %>
+                input_html: { autocomplete: "new-password", class: 'form-control' },
+                wrapper_html: { class: 'mb-3' } %>
                 
 
-    <%= f.input :first_name, required: true %>
+    <%= f.input :first_name, required: true, input_html: { class: 'form-control' }, wrapper_html: { class: 'mb-3' } %>
 
-    <%= f.input :last_name, required: true %>
+    <%= f.input :last_name, required: true, input_html: { class: 'form-control' }, wrapper_html: { class: 'mb-3' } %>
 
-    <!--<h2></h2>-->
-
-    <!--basic info-->
+    <!-- Basic info -->
+    <p> What's your gender? </p>
     <% User.genders.each_with_index do |gender, i| %>
-      <div class="form-check">
-        <input class="form-check-input" type="radio" name="userGenderRadio" id="<%= "userGenderRadio#{i}" %>">
+      <div class="form-check mb-2">
+        <input class="form-check-input" type="radio" name="userGenderRadio" id="<%= "userGenderRadio#{i}" %>" value="<%= gender.at(0).downcase %>">
         <label class="form-check-label" for="<%= "userGenderRadio#{i}" %>">
           <%= gender.at(0).titleize %>
         </label>
       </div>
     <% end %>
 
-    <%= f.input :dob, as: :date, start_year: Date.today.year - 100, end_year: Date.today.year, order: [:month, :day, :year], prompt: { month: 'Select month', day: 'Select day', year: 'Select year' }, label: 'Date of Birth' %>
+    <%= f.input :dob, as: :date,
+                start_year: Date.today.year - 100, 
+                end_year: Date.today.year, 
+                order: [:month, :day, :year], 
+                prompt: { month: 'Select month', day: 'Select day', year: 'Select year' }, 
+                label: 'Date of Birth', 
+                wrapper_html: { class: 'mb-3' },
+                input_html: { class: 'form-select' } %>
 
-    <!-- Add the avatar file field here -->
-    <%= f.input :avatar, as: :file %>
+    <!-- Avatar file field -->
+    <%= f.input :avatar, as: :file, wrapper_html: { class: 'mb-3' } %>
 
     <%= f.input :bio, as: :text, 
-             input_html: { 
-               rows: 10, 
-               cols: 50, 
-               placeholder: 'Tell us about yourself', 
-               maxlength: 500 
-             }, 
-             label: 'Biography' %>
+                 input_html: { 
+                   class: 'form-control',
+                   rows: 10, 
+                   placeholder: 'Tell us about yourself', 
+                   maxlength: 500 
+                 }, 
+                 wrapper_html: { class: 'mb-3' },
+                 label_html: { class: 'form-label' } %>
 
-   <%= f.input :user_gym, collection: User.gym_name_options, prompt: "What gym do you go to?" %>
+    <%= f.input :user_gym, collection: User.gym_name_options, prompt: "What gym do you go to?", label: "Gym", input_html: { class: 'form-select' }, wrapper_html: { class: 'mb-3' } %>
 
-   <%= f.input :time_of_day, collection: User.time_of_days.keys, prompt: "What time do you go to the gym?" %>
+    <%= f.input :time_of_day, collection: User.time_of_days.keys, prompt: "What time do you go to the gym?", input_html: { class: 'form-select' }, wrapper_html: { class: 'mb-3' } %>
 
+    <%= f.input :gym_frequency_category, collection: User.user_gym_frequency_options, prompt: "How often do you go to the gym?", input_html: { class: 'form-select' }, wrapper_html: { class: 'mb-3' } %>
 
-   <%= f.input :gym_frequency_category, collection: User.user_gym_frequency_options, prompt: "How often do you go to the gym?" %>
+    <div class="mb-3">
+    <p>  What's your skill level? </p>
+      <%= f.radio_button :skill_level, "beginner", class: 'form-check-input' %> Beginner <br>
+      <%= f.radio_button :skill_level, "intermediate", class: 'form-check-input' %> Intermediate <br>
+      <%= f.radio_button :skill_level, "advanced", class: 'form-check-input' %> Advanced
+    </div>
 
-
-   <%= f.radio_button :skill_level, "beginner" %> Beginner
-
-    <%= f.radio_button :skill_level, "intermediate" %> Intermediate
-
-    <%= f.radio_button :skill_level, "advanced" %> Advanced
-
-     <%= f.input :ideal_match_gender, as: :select, collection: ['Male', 'Female', 'Non-binary'], input_html: { multiple: true }, include_hidden: false %>
-
-<!---->
-
+    <%= f.input :ideal_match_gender, as: :select, collection: ['Male', 'Female', 'Non-binary'], label: "What gender(s) are you looking for your gym buddy? ", input_html: { multiple: true, class: 'form-select' }, include_hidden: false, wrapper_html: { class: 'mb-3' } %>
 
   </div>
 
   <div class="form-actions">
-    <%= f.button :submit, "Sign up", class: "btn-primary" %>
+    <%= f.button :submit, "Sign up", class: "btn btn-primary" %>
   </div>
 <% end %>
 

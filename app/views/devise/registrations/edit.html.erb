@@ -1,66 +1,65 @@
-<h2>Edit <%= resource_name.to_s.humanize %></h2>
+<h2>Edit your profile</h2>
 
-<%= simple_form_for(resource, as: resource_name, url: registration_path(resource_name), html: { method: :put }) do |f| %>
+<%= simple_form_for(resource, as: resource_name, url: registration_path(resource_name), html: { method: :put, class: 'needs-validation', novalidate: true }) do |f| %>
   <%= f.error_notification %>
 
   <div class="form-inputs">
 
     <!-- Avatar upload field -->
-    <%= f.input :avatar, as: :file %>
+    <%= f.input :avatar, as: :file, label: "Edit profile picture: ",wrapper_html: { class: 'mb-3' } %>
 
     <%= f.input :bio, as: :text, 
-             input_html: { 
-               rows: 10, 
-               cols: 50, 
-               placeholder: 'Tell us about yourself', 
-               maxlength: 500 
-             }, 
-             label: 'Biography' %>
+                 input_html: { 
+                   class: 'form-control',
+                   rows: 10, 
+                   placeholder: 'Tell us about yourself', 
+                   maxlength: 500 
+                 }, 
+                 wrapper_html: { class: 'mb-3' },
+                 label_html: { class: 'form-label' } %>
 
-    <%= f.input :user_gym, collection: User.gym_name_options, prompt: "What gym do you go to?" %>
+    <%= f.input :user_gym, label: "Gym", collection: User.gym_name_options, prompt: "What gym do you go to?", wrapper_html: { class: 'mb-3' }, input_html: { class: 'form-select' } %>
 
+    <%= f.input :time_of_day, collection: User.time_of_days.keys, prompt: "What time do you go to the gym?", label: "What time do you go to the gym?", wrapper_html: { class: 'mb-3' }, input_html: { class: 'form-select' } %>
 
-    <%= f.input :time_of_day, collection: User.time_of_days.keys, prompt: "What time do you go to the gym?" %>
+    <%= f.input :gym_frequency_category, collection: User.user_gym_frequency_options, label: "How often do you go to the gym?", wrapper_html: { class: 'mb-3' }, input_html: { class: 'form-select' } %>
 
+    <div class="mb-3">
+      <%= f.label :skill_level, class: 'form-label' %> <br>
+      <%= f.radio_button :skill_level, "beginner" %> Beginner <br>
+      <%= f.radio_button :skill_level, "intermediate" %> Intermediate <br>
+      <%= f.radio_button :skill_level, "advanced" %> Advanced
+    </div>
 
-   <%= f.input :gym_frequency_category, collection: User.user_gym_frequency_options, prompt: "How often do you go to the gym?" %>
+    <%= f.input :ideal_match_gender, as: :select, collection: ['Male', 'Female', 'Non-binary'], input_html: { multiple: true, class: 'form-select' }, include_hidden: false, wrapper_html: { class: 'mb-3' } %>
 
-
-   <%= f.radio_button :skill_level, "beginner" %> Beginner
-
-    <%= f.radio_button :skill_level, "intermediate" %> Intermediate
-
-    <%= f.radio_button :skill_level, "advanced" %> Advanced
-
-     <%= f.input :ideal_match_gender, as: :select, collection: ['Male', 'Female', 'Non-binary'], input_html: { multiple: true }, include_hidden: false %>
-     
-    
-    <%= f.input :email, required: true, autofocus: true %>
+    <%= f.input :email, required: true, autofocus: true, wrapper_html: { class: 'mb-3' }, input_html: { class: 'form-control' } %>
 
     <% if devise_mapping.confirmable? && resource.pending_reconfirmation? %>
       <p>Currently waiting confirmation for: <%= resource.unconfirmed_email %></p>
     <% end %>
 
     <%= f.input :password,
-                hint: "leave it blank if you don't want to change it",
+                hint: "Leave it blank if you don't want to change it",
                 required: false,
-                input_html: { autocomplete: "new-password" } %>
+                input_html: { autocomplete: "new-password", class: 'form-control' },
+                wrapper_html: { class: 'mb-3' } %>
     <%= f.input :password_confirmation,
                 required: false,
-                input_html: { autocomplete: "new-password" } %>
+                input_html: { autocomplete: "new-password", class: 'form-control' },
+                wrapper_html: { class: 'mb-3' } %>
     <%= f.input :current_password,
-                hint: "we need your current password to confirm your changes",
+                hint: "We need your current password to confirm your changes",
                 required: true,
-                input_html: { autocomplete: "current-password" } %>
+                input_html: { autocomplete: "current-password", class: 'form-control' },
+                wrapper_html: { class: 'mb-3' } %>
   </div>
 
   <div class="form-actions">
-    <%= f.button :submit, "Update" %>
+    <%= f.button :submit, "Update", class: 'btn btn-primary' %>
   </div>
 <% end %>
 
 <h3>Cancel my account</h3>
 
-<div>Unhappy? <%= button_to "Cancel my account", registration_path(resource_name), data: { confirm: "Are you sure?", turbo_confirm: "Are you sure?" }, method: :delete %></div>
-
-<%= link_to "Back", :back %>
+<div>Unhappy? <%= button_to "Cancel my account", registration_path(resource_name), data: { confirm: "Are you sure?", turbo_confirm: "Are you sure?" }, method: :delete, class: 'btn btn-danger' %></div>

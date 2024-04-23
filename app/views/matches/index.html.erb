@@ -3,13 +3,12 @@
 <h1>Your Matches</h1>
 
 <div class="row">
-  <%# Loop through each accepted match %>
   <% @matches.each do |match| %>
     <% other_user = match.requester == current_user ? match.approver : match.requester %>
     <div class="col-md-4 mb-3">
       <div class="card">
         <div class="card-header">
-          <%= other_user.full_name.titleize %>
+          <%= other_user.full_name.titleize %>, <%= other_user.age %>
         </div>
         <div class="card-body text-center">
           <% if other_user.avatar.attached? %>
