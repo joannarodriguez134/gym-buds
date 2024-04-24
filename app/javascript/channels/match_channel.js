@@ -15,9 +15,6 @@ consumer.subscriptions.create("MatchChannel", {
 
   received(data) {
 
-    if (data.status === 'accepted') {
-      $('#exampleModal').modal('show');
-    }
     // Called when there's incoming data on the websocket for this channel
     console.log('Received data:', data);
     const messagesContainer = document.querySelector('#messages-container');

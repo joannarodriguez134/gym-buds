@@ -54,18 +54,27 @@ class MatchesController < ApplicationController
 
   # PATCH/PUT /matches/1 or /matches/1.json
   def update
-    if @match.update(match_params)
-      if @match.accepted?
-        MatchChannel.broadcast_to(
-          @match.approver,
-          { match_id: @match.id, status: 'accepted', message: 'Your match has been accepted!' }
-        )
+    respond_to do |format|
+      if @match.update(match_params)
+        format.html { redirect_to match_url(@match), notice: "Match was successfully updated." }
+        format.json { render :show, status: :ok, location: @match }
+      else
+        format.html { render :edit, status: :unprocessable_entity }
+        format.json { render json: @match.errors, status: :unprocessable_entity }
       end
-      redirect_to match_url(@match), notice: "Match was successfully updated."
-    else
-      render :edit, status: :unprocessable_entity
     end
   end
+
+  # DELETE /matches/1 or /matches/1.json
+  def destroy
+    @match.destroy
+
+    respond_to do |format|
+      format.html { redirect_to matches_url, notice: "Match was successfully destroyed." }
+      format.json { head :no_content }
+    end
+  end
+
   
 
   # DELETE /matches/1 or /matches/1.json
@@ -81,26 +90,17 @@ class MatchesController < ApplicationController
 
   def like
     target_user = User.find_by!(username: params[:username])
-    existing_match = Match.find_or_initialize_by(requester: current_user, approver: target_user)
-  
-    respond_to do |format|
-      if existing_match.new_record?
-        existing_match.status = 'pending'
-        existing_match.save
-        format.js
-      elsif existing_match.pending?
-        existing_match.update(status: 'accepted')
-        if Match.exists?(requester_id: target_user.id, approver_id: current_user.id, status: 'accepted')
-          format.js { render 'mutual_match.js.erb' }
-        else
-          format.js
-        end
-      else
-        format.js
-      end
+    # The logic for finding or creating the match remains the same.
+    existing_match = Match.find_or_initialize_by(requester: current_user, approver: target_user) do |match|
+      match.status = 'pending'
+    end
+    
+    if existing_match.persisted? && existing_match.pending?
+      existing_match.update(status: 'accepted')
+    elsif !existing_match.persisted?
+      existing_match.save
     end
   end
-  
    
   
   
