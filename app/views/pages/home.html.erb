@@ -31,3 +31,46 @@
     </div>
   </div>
 </div>
+
+
+<div class="d-flex align-items-center min-vh-100 bg-light">
+  <div class="container">
+    <div class="mx-auto my-5 p-5 bg-white rounded shadow-sm" style="max-width: 500px;">
+      <div class="text-center">
+        <h1 class="h3 mb-3 font-weight-normal text-dark">
+          Contact Us
+        </h1>
+        <p class="text-muted">
+          Fill up the form below to send us a message.
+        </p>
+      </div>
+      <form action="https://api.web3forms.com/submit" method="POST" id="form">
+        <input type="hidden" name="access_key" value="0ca041b5-7c2c-473f-80ce-951c798054c9">
+        <input type="hidden" name="subject" value="New Submission from Web3Forms">
+        <input type="checkbox" name="botcheck" id="" style="display: none;">
+
+        <div class="mb-3">
+          <label for="name" class="form-label">Full Name</label>
+          <input type="text" name="name" id="name" placeholder="John Doe" required class="form-control">
+        </div>
+        <div class="mb-3">
+          <label for="email" class="form-label">Email Address</label>
+          <input type="email" name="email" id="email" placeholder="you@example.com" required class="form-control">
+        </div>
+        <div class="mb-3">
+          <label for="phone" class="form-label">Phone Number</label>
+          <input type="text" name="phone" id="phone" placeholder="+1 (555) 1234-567" required class="form-control">
+        </div>
+        <div class="mb-3">
+          <label for="message" class="form-label">Your Message</label>
+          <textarea rows="5" name="message" id="message" placeholder="Type your message..." required class="form-control"></textarea>
+        </div>
+        <div class="mb-3">
+          <button type="submit" class="btn btn-primary btn-block">Send Message</button>
+        </div>
+      </form>
+    </div>
+  </div>
+</div>
+
+<script src="path/to/form.js"></script>
