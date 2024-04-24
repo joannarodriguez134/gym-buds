@@ -118,3 +118,5 @@ group :test do
 end
 
 gem "pagy", "~> 8.2"
+
+gem "meta-tags"
