@@ -5,12 +5,37 @@ class MessagesController < ApplicationController
 
   # GET /messages or /messages.json
 
-    def index
-      @match = Match.find(params[:match_id])
+  #   def index
+  #     @match = Match.find(params[:match_id])
   
-      @messages = @match.messages.order(created_at: :asc)
-      @new_message = Message.new
-  end
+  #     pagy_messages = @match.messages.order(created_at: :desc)
+  #     @pagy, @messages = pagy(pagy_messages, items: 20)
+
+  #     @messages = message.reverse
+  #     @new_message = Message.new
+
+  # end
+
+  def index
+    @match = Match.find(params[:match_id])
+    @new_message = Message.new
+  
+    # Determine offset based on page or last message ID
+    if params[:last_message_id]
+      # Fetch older messages than the one specified
+      @messages = @match.messages.where("id < ?", params[:last_message_id]).order(created_at: :asc).limit(20)
+    else
+      # Fetch the last 20 messages, but we'll reverse them in the view to show the most recent at the bottom
+      @messages = @match.messages.order(created_at: :desc).limit(20)
+    end
+
+    respond_to do |format|
+      format.html { render :index }
+      format.js
+    end
+  end  
+  
+
 
   # GET /messages/1 or /messages/1.json
   def show
@@ -26,33 +51,32 @@ class MessagesController < ApplicationController
   def edit
   end
 
-
   # POST /messages or /messages.json
   def create
     @match = Match.find(params[:match_id])
     @message = @match.messages.build(message_params)
     @message.sender_id = current_user.id
 
-     # Determine the receiver as the other user in the match
+    # Determine the receiver as the other user in the match
     @message.receiver_id = if @match.requester_id == current_user.id
-      @match.approver_id
-    else
-      @match.requester_id
-    end
-    
+        @match.approver_id
+      else
+        @match.requester_id
+      end
+
     if @message.sender_id == @message.receiver_id
       redirect_to matches_path, alert: "Cannot send messages to yourself."
       return
     end
-  
-    if @match.status != 'accepted' || (@match.requester_id != current_user.id && @match.approver_id != current_user.id)
+
+    if @match.status != "accepted" || (@match.requester_id != current_user.id && @match.approver_id != current_user.id)
       redirect_to matches_path, alert: "Not authorized to send messages."
       return
     end
-    
+
     respond_to do |format|
       if @message.save
-        format.html { redirect_to match_messages_path(@match,:anchor => "wall"), notice: "Message was successfully sent." }
+        format.html { redirect_to match_messages_path(@match, :anchor => "wall"), notice: "Message was successfully sent." }
         format.json { render :show, status: :created, location: @message }
         # ActionCable.server.broadcast "match_#{@message.match_id}", message: render_message(message)
         format.js
@@ -60,9 +84,8 @@ class MessagesController < ApplicationController
         format.html { render :new, status: :unprocessable_entity }
         format.json { render json: @message.errors, status: :unprocessable_entity }
       end
-    end    
-end
-
+    end
+  end
 
   # PATCH/PUT /messages/1 or /messages/1.json
   def update
@@ -94,13 +117,11 @@ end
     @message = Message.find(params[:id])
   end
 
-
   def set_match
     @match = Match.find(params[:match_id])
   rescue ActiveRecord::RecordNotFound
     redirect_to(root_path, alert: "Match not found.")
   end
-
 
   # Only allow a list of trusted parameters through.
 
@@ -108,8 +129,8 @@ end
     params.require(:message).permit(:body, :receiver_id)
   end
 
-#   def render_message(message)
-#   ApplicationController.renderer.render(partial: 'messages/message', locals: { message: @message })
-# end
+  #   def render_message(message)
+  #   ApplicationController.renderer.render(partial: 'messages/message', locals: { message: @message })
+  # end
 
 end

@@ -116,3 +116,5 @@ group :test do
   gem "rspec-html-matchers"
   gem "webmock"
 end
+
+gem "pagy", "~> 8.2"

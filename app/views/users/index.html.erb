@@ -14,35 +14,34 @@
                 <h5 class="card-title"><%= user.full_name.titleize %></h5>
                 <p class="card-text"><%= user.bio %></p>
                 <%= link_to 'View profile', user_path(user.username), class: "btn btn-primary" %>
-                
+
                 <div class="d-flex justify-content-center">
-                  <!-- Like Button -->
-                  <%= form_with url: like_match_by_username_path(username: user.username), method: :put do |form| %>
-                    <%= form.submit 'Like', class: "fa-solid fa-heart fa-2xl mr-2", style: "color: #e32400;" %>
-                  <% end %>
+                  <%= form_with url: like_match_by_username_path(username: user.username), method: :put, remote: true, class: "d-inline" do |form| %>
+                    <%= form.submit 'Like', class: "btn btn-success" %>
+                    <% end %>
 
-                  <!-- Reject (Dislike) Button -->
-                  <%= form_with url: reject_match_by_username_path(username: user.username), method: :put do |form| %>
-                    <%= form.submit 'Reject', class: "fa-solid fa-circle-xmark fa-2xl ml-2", style: "color: #e32400;" %>
-                  <% end %>
+                    <%= form_with url: reject_match_by_username_path(username: user.username), method: :put, class: "d-inline" do |form| %>
+                      <%= form.submit 'Reject', class: "btn btn-danger" %>
+
+                    <% end %>
+                  </div>
+
                 </div>
-
               </div>
             </div>
           </div>
         </div>
-      </div>
-    <% end %>
-  </div>
-  <% if @users.size > 1 %>
-    <button class="carousel-control-prev" type="button" data-bs-target="#usersCarousel" data-bs-slide="prev">
-      <span class="carousel-control-prev-icon" aria-hidden="true"></span>
-      <span class="visually-hidden">Previous</span>
-    </button>
-    <button class="carousel-control-next" type="button" data-bs-target="#usersCarousel" data-bs-slide="next">
-      <span class="carousel-control-next-icon" aria-hidden="true"></span>
-      <span class="visually-hidden">Next</span>
-    </button>
-  </div>
-<% end %>
+      <% end %>
+    </div>
+    <% if @users.size > 1 %>
+      <button class="carousel-control-prev" type="button" data-bs-target="#usersCarousel" data-bs-slide="prev">
+        <span class="carousel-control-prev-icon" aria-hidden="true"></span>
+        <span class="visually-hidden">Previous</span>
+      </button>
+      <button class="carousel-control-next" type="button" data-bs-target="#usersCarousel" data-bs-slide="next">
+        <span class="carousel-control-next-icon" aria-hidden="true"></span>
+        <span class="visually-hidden">Next</span>
+      </button>
+    </div>
+  <% end %>
 </div>

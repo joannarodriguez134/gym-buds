@@ -15,6 +15,12 @@
  */
 
 /* app/assets/stylesheets/application.css or in an appropriate stylesheet file */
+
+.bg-orange {
+  background-color: #EF8354;
+  color: #ffffff;
+}
+
 .message-bubble {
   padding: 10px 15px;
   border-radius: 20px;
@@ -24,13 +30,13 @@
 }
 
 .sent-by-user {
-  background-color: #80caa6; /* Light green, commonly used for "sent" messages */
+  background-color: #80caa6;
   align-self: flex-end;
   text-align: right;
 }
 
 .received-message {
-  background-color: #ffffff; /* White, commonly used for "received" messages */
+  background-color: #ffffff;
   align-self: flex-start;
   text-align: left;
 }
@@ -110,3 +116,5 @@
   max-width: 100%; /* Limit image width to not exceed the container width */
   height: auto; /* Maintain aspect ratio */
 }
+
+

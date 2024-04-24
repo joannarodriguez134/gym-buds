@@ -1,64 +1,57 @@
 
-<h1>
-  <%= @user.full_name.titleize %>, <%= @user.age %>
-</h1>
+<div class="container mt-5">
+  <div class="card border-0 shadow">
 
-<%# Display the user's avatar if it's attached %>
-
-
-<%= image_tag(@user.avatar, class: "img-fluid", size: "500") if @user.avatar.attached? %>
-
-<% if @user.bio.present? %>
-  <h5> <b>About me </b> </h5>
-  <p><%= @user.bio %></p>
-<% end %>
-
-<h5> <b>My basics </b> </h5>
-
-<% if @user.user_gym.present? %>
-  <p> <b>The gym I go to:</b> <%= @user.gym_name %> </p>
-<% end %>
-
-<% if @user.gender.present? %>
-  <p> <b>My gender:</b> <%= @user.gender %> </p>
-<% end %>
-
-<% if @user.time_of_day.present? %>
-  <p> <b>I go to the gym at these times: </b> <%= @user.time_of_day %> </p>
-<% end %>
-
-<% if @user.user_gym_frequency.present? %>
-  <p> <b>How often do I go to the gym:</b> <%= @user.user_gym_frequency %> </p>
-<% end %>
-
-<% if @user.skill_level.present? %>
-  <p> <b>My skill level:</b> <%= @user.skill_level %> </p>
-<% end %>
-
-<% if @user.type_of_workouts.present? %>
-  <p> <b>Type of workouts I typically do:</b> <%= @user.workouts %> </p>
-<% end %>
-
-
-<% if @user.ideal_match_gender.present? %>
-  <p> <b>Im looking to workout with:</b> 
-<!--  loop over all the ideal match genders-->
-  <% @user.ideal_match_gender.each do |ideal_gender| %>
-      <%= ideal_gender%>
+    <% if @user.avatar.attached? %>
+      <div class="text-center mt-3">
+        <%= image_tag(@user.avatar, class: "img-fluid", size: "500") %>
+      </div>
     <% end %>
-   </p>
-<% end %>
 
-<% if policy(@user).edit? %>
-  <%= link_to 'Edit Profile', edit_user_registration_path, class: "btn btn-primary"%>
-<% end %>
+    <div class="card-body">
+      <h1 class="card-title text-center">
+        <%= @user.full_name.titleize %>, <%= @user.age %>
 
+        <% if policy(@user).edit? %>
+        <div class="text-center mt-4 mb-4">
+          <%= link_to 'Edit Profile', edit_user_registration_path, class: "btn btn-primary" %>
+        <% end %>
+      </h1>
 
-<!--<div class="card" style="width: 18rem;">-->
-  <%#= image_tag(@user.avatar, class: "img-fluid", size: "500") if @user.avatar.attached? %>
-<!--  <div class="card-body">
-    <h5 class="card-title"><%#= @user.full_name.titleize %>, <%= @user.age %></h5>
-    <p class="card-text"><b> About me</b></p>
-    <a href="#" class="btn btn-primary">Go somewhere</a>
+      <% if @user.bio.present? %>
+        <div class="mt-4 px-3">
+          <h5><strong>About me</strong></h5>
+          <p><%= @user.bio %></p>
+        </div>
+      <% end %>
+
+      <div class="mt-4 px-3">
+        <h5><strong>My basics</strong></h5>
+        <ul class="list-group list-group-flush">
+          <% if @user.user_gym.present? %>
+            <li class="list-group-item"><strong>The gym I go to:</strong> <%= @user.gym_name %></li>
+          <% end %>
+          <% if @user.gender.present? %>
+            <li class="list-group-item"><strong>My gender:</strong> <%= @user.gender %></li>
+          <% end %>
+          <% if @user.time_of_day.present? %>
+            <li class="list-group-item"><strong>I go to the gym at these times:</strong> <%= @user.time_of_day %></li>
+          <% end %>
+          <% if @user.user_gym_frequency.present? %>
+            <li class="list-group-item"><strong>How often do I go to the gym:</strong> <%= @user.user_gym_frequency %></li>
+          <% end %>
+          <% if @user.skill_level.present? %>
+            <li class="list-group-item"><strong>My skill level:</strong> <%= @user.skill_level %></li>
+          <% end %>
+          <% if @user.type_of_workouts.present? %>
+            <li class="list-group-item"><strong>Type of workouts I typically do:</strong> <%= @user.workouts %></li>
+          <% end %>
+          <% if @user.ideal_match_gender.present? %>
+            <li class="list-group-item"><strong>I'm looking to workout with:</strong> <%= @user.ideal_match_gender.join(', ') %></li>
+          <% end %>
+        </ul>
+      </div>
+        </div>
+    </div>
   </div>
-</div>-->
+</div>
