@@ -73,11 +73,11 @@
   padding: 10px;
   border: 1px solid #ccc;
   border-radius: 4px;
-  resize: none; /* Prevent resizing */
+  resize: none; 
 }
 
 .message-form input[type="submit"] {
-  background-color: #4CAF50; /* Green background */
+  background-color: #4CAF50; 
   color: white;
   padding: 10px 20px;
   border: none;
@@ -87,7 +87,7 @@
 }
 
 .message-form input[type="submit"]:hover {
-  background-color: #45a049; /* Darker green */
+  background-color: #45a049;
 }
 
 #error_explanation {
@@ -107,14 +107,62 @@
 
 .card-smaller {
   width: 75%; 
-  margin: 0 auto; /* Centers the card in the carousel item */
+  margin: 0 auto;
   padding: 10px;
 }
 
 
 .img-smaller {
-  max-width: 100%; /* Limit image width to not exceed the container width */
-  height: auto; /* Maintain aspect ratio */
+  max-width: 100%; 
+  height: auto; 
 }
 
 
+.carousel-item {
+  position: relative;
+}
+
+.carousel-caption {
+  position: absolute;
+  bottom: 0;  
+  left: 0;
+  right: 0;
+
+  padding: 10px;
+  text-align: center;
+}
+
+
+@media (max-width: 768px) { 
+  .carousel-caption {
+      padding: 5px;
+      font-size: 0.75rem;
+  }
+}
+
+
+.carousel-caption {
+  left: 25%; 
+  right: 25%;
+}
+
+
+#testimonialCarousel .carousel-item {
+  padding: 20px;
+}
+
+#testimonialCarousel .card {
+  height: 200px;  
+  max-width: 90%; 
+  margin: auto;
+}
+
+#testimonialCarousel .card-body {
+  padding: 20px;
+}
+
+@media (max-width: 768px) {
+  .col-md-6 {
+    width: 100%;
+  }
+}

@@ -1,7 +1,12 @@
-<h2 class="text-center my-4">Gymbuds: Just a Swipe Away – Match, Message, Meet!</h2>
-
 <div class="text-center">
-  <%= image_tag("gymbuds-logo.png", alt: "Gym Buds Logo", class: "img-fluid my-3", width: "500") %>
+  <div class="row justify-content-center align-items-center">
+    <div class="col-md-6"> 
+      <h2 class="my-4">Gymbuds: Just a Swipe Away – Match, Message, Meet!</h2>
+    </div>
+    <div class="col-md-6">
+      <%= image_tag("gymbuds-logo.png", alt: "Gym Buds Logo", class: "img-fluid my-3", width: "200") %>
+    </div>
+  </div>
 </div>
 
 <div class="d-flex justify-content-center my-4">
@@ -32,45 +37,104 @@
   </div>
 </div>
 
+<div class="container">
+  <div class="row">
+    <!-- Carousel Column -->
+    <div class="col-md-6">
+      <div id="testimonialCarousel" class="carousel slide" data-bs-ride="carousel">
+        <div class="carousel-inner">
+          <div class="carousel-item active">
+            <div class="card text-center">
+              <div class="card-body">
+                <h5 class="card-title">John & Jane</h5>
+                <p class="card-text">"Joining GymBuds helped us find the motivation we needed. Together, we've overcome our gym fears and are now regulars, pushing each other every day!"</p>
+              </div>
+            </div>
+          </div>
+          <div class="carousel-item">
+            <div class="card text-center">
+              <div class="card-body">
+                <h5 class="card-title">Mike & Emma</h5>
+                <p class="card-text">"Finding each other through GymBuds was a game-changer. It's easier to wake up for a 5 AM workout when you know your buddy is counting on you!"</p>
+              </div>
+            </div>
+          </div>
+          <div class="carousel-item">
+            <div class="card text-center">
+              <div class="card-body">
+                <h5 class="card-title">Alice & Bob</h5>
+                <p class="card-text">"We were both hesitant about going to the gym alone, but GymBuds brought us together. Now, we're not just gym partners but great friends too!"</p>
+              </div>
+            </div>
+          </div>
 
-<div class="d-flex align-items-center min-vh-100 bg-light">
-  <div class="container">
-    <div class="mx-auto my-5 p-5 bg-white rounded shadow-sm" style="max-width: 500px;">
-      <div class="text-center">
-        <h1 class="h3 mb-3 font-weight-normal text-dark">
-          Contact Us
-        </h1>
-        <p class="text-muted">
-          Fill up the form below to send us a message.
-        </p>
+          <div class="carousel-item">
+            <div class="card text-center">
+              <div class="card-body">
+                <h5 class="card-title">Sophia & Grace </h5>
+                <p class="card-text">"After Sophia was diagnosed with diabetes, we both decided it was time for a change. GymBuds helped us connect, and together, we've managed to take control of our health with regular exercise."</p>
+              </div>
+            </div>
+          </div>
+
+          <div class="carousel-item">
+            <div class="card text-center">
+              <div class="card-body">
+                <h5 class="card-title">Aiden & Jacob </h5>
+                <p class="card-text">"What started as a weekly workout session through GymBuds turned into a strong friendship. We're more than gym partners; we're best friends, always there to support each other in and out of the gym."</p>
+              </div>
+            </div>
+          </div>
+
+        </div>
+        <button class="carousel-control-prev" type="button" data-bs-target="#testimonialCarousel" data-bs-slide="prev">
+          <span class="carousel-control-prev-icon" aria-hidden="true"></span>
+          <span class="visually-hidden">Previous</span>
+        </button>
+        <button class="carousel-control-next" type="button" data-bs-target="#testimonialCarousel" data-bs-slide="next">
+          <span class="carousel-control-next-icon" aria-hidden="true"></span>
+          <span class="visually-hidden">Next</span>
+        </button>
       </div>
-      <form action="https://api.web3forms.com/submit" method="POST" id="form">
-        <input type="hidden" name="access_key" value="0ca041b5-7c2c-473f-80ce-951c798054c9">
-        <input type="hidden" name="subject" value="New Submission from Web3Forms">
-        <input type="checkbox" name="botcheck" id="" style="display: none;">
+    </div>
 
-        <div class="mb-3">
-          <label for="name" class="form-label">Full Name</label>
-          <input type="text" name="name" id="name" placeholder="John Doe" required class="form-control">
+    <!-- Contact Form Column -->
+    <div class="col-md-6">
+      
+        <div class="container">
+          <div class="mx-auto my-5 p-5 bg-white rounded shadow-sm" style="max-width: 500px;">
+            <div class="text-center">
+              <h1 class="h3 mb-3 font-weight-normal text-dark">Contact Us</h1>
+              <p class="text-muted">Fill up the form below to send us a message.</p>
+            </div>
+            <form action="https://api.web3forms.com/submit" method="POST" id="form">
+              <input type="hidden" name="access_key" value="0ca041b5-7c2c-473f-80ce-951c798054c9">
+              <input type="hidden" name="subject" value="New Submission from Web3Forms">
+              <input type="checkbox" name="botcheck" id="" style="display: none;">
+              <div class="mb-3">
+                <label for="name" class="form-label">Full Name</label>
+                <input type="text" name="name" id="name" placeholder="John Doe" required class="form-control">
+              </div>
+              <div class="mb-3">
+                <label for="email" class="form-label">Email Address</label>
+                <input type="email" name="email" id="email" placeholder="you@example.com" required class="form-control">
+              </div>
+              <div class="mb-3">
+                <label for="phone" class="form-label">Phone Number</label>
+                <input type="text" name="phone" id="phone" placeholder="+1 (555) 1234-567" required class="form-control">
+              </div>
+              <div class="mb-3">
+                <label for="message" class="form-label">Your Message</label>
+                <textarea rows="5" name="message" id="message" placeholder="Type your message..." required class="form-control"></textarea>
+              </div>
+              <div class="mb-3">
+                <button type="submit" class="btn btn-primary btn-block">Send Message</button>
+              </div>
+            </form>
+            <script src="path/to/form.js"></script>
+          </div>
         </div>
-        <div class="mb-3">
-          <label for="email" class="form-label">Email Address</label>
-          <input type="email" name="email" id="email" placeholder="you@example.com" required class="form-control">
-        </div>
-        <div class="mb-3">
-          <label for="phone" class="form-label">Phone Number</label>
-          <input type="text" name="phone" id="phone" placeholder="+1 (555) 1234-567" required class="form-control">
-        </div>
-        <div class="mb-3">
-          <label for="message" class="form-label">Your Message</label>
-          <textarea rows="5" name="message" id="message" placeholder="Type your message..." required class="form-control"></textarea>
-        </div>
-        <div class="mb-3">
-          <button type="submit" class="btn btn-primary btn-block">Send Message</button>
-        </div>
-      </form>
+      
     </div>
   </div>
 </div>
-
-<script src="path/to/form.js"></script>
