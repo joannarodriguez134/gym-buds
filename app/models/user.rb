@@ -36,6 +36,7 @@ class User < ApplicationRecord
          :recoverable, :rememberable, :validatable
 
   has_one_attached :avatar
+  has_many_attached :additional_images
 
   # when user gets deleted so does matches and messages
   has_many :matches, dependent: :destroy
@@ -57,6 +58,7 @@ class User < ApplicationRecord
   validates :last_name, presence: true
   validates :dob, presence: true
   validates :username, presence: true
+  validate :additional_images_count_within_limit
 
   scope :all_except, ->(user) { where.not(id: user) }
 
@@ -188,6 +190,12 @@ class User < ApplicationRecord
 
   def full_name
     [first_name, last_name].join(" ")
+  end
+
+  def additional_images_count_within_limit
+    if additional_images.attached? && additional_images.count > 3
+      errors.add(:additional_images, 'You can upload no more than 3 images.')
+    end
   end
 
 end
