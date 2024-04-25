@@ -122,4 +122,3 @@ gem "pagy", "~> 8.2"
 gem "meta-tags"
 
 gem "rails_admin", "~> 3.1"
-gem "cssbundling-rails"
