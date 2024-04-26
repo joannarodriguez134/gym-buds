@@ -36,6 +36,9 @@ class User < ApplicationRecord
          :recoverable, :rememberable, :validatable
 
   has_one_attached :avatar
+  has_one_attached :additional_files
+  has_one_attached :additional_files_2
+  has_one_attached :additional_files_3
 
   # when user gets deleted so does matches and messages
   has_many :matches, dependent: :destroy
@@ -57,6 +60,7 @@ class User < ApplicationRecord
   validates :last_name, presence: true
   validates :dob, presence: true
   validates :username, presence: true
+  validate :validate_file_sizes
 
   scope :all_except, ->(user) { where.not(id: user) }
 
@@ -188,6 +192,18 @@ class User < ApplicationRecord
 
   def full_name
     [first_name, last_name].join(" ")
+  end
+
+  def validate_file_sizes
+    max_file_size = 10.megabytes
+
+    all_attachments = [avatar, *additional_files, *additional_files_2, *additional_files_3].compact
+
+    all_attachments.each do |file|
+      if file.attached? && file.blob.byte_size > max_file_size
+        errors.add(:base, "#{file.filename} is too large. Maximum file size allowed is 10 MB.")
+      end
+    end
   end
 
 end
