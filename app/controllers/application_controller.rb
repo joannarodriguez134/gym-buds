@@ -8,7 +8,7 @@ class ApplicationController < ActionController::Base
   protected
 
   def configure_permitted_parameters
-    devise_parameter_sanitizer.permit(:account_update, keys: [:first_name, :last_name, :bio, :dob, :email, :gender, :gym_frequency_category, :skill_level, :time_of_day, :type_of_workouts, :user_gym, :username, :avatar,  :additional_images, :additional_images_2, :additional_images_3, ideal_match_gender: []])
+    devise_parameter_sanitizer.permit(:account_update, keys: [:first_name, :last_name, :bio, :dob, :email, :gender, :gym_frequency_category, :skill_level, :time_of_day, :type_of_workouts, :user_gym, :username, :avatar,  :additional_files, :additional_files_2, :additional_files_3, ideal_match_gender: []])
     devise_parameter_sanitizer.permit(:sign_up, keys: [:first_name, :last_name, :bio, :dob, :email, :gender, :gym_frequency_category, :skill_level, :time_of_day, :type_of_workouts, :user_gym, :username, :avatar, ideal_match_gender: []])
   end
 

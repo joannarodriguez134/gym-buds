@@ -12,20 +12,37 @@
           <% end %>
         </div>
       </div>
+      
+    <div id="carouselExampleDark" class="carousel carousel-dark slide" data-bs-ride="carousel">
+  <!-- Carousel Indicators -->
+  <div class="carousel-indicators">
+  <% all_images = [ @user.avatar, *@user.additional_files, *@user.additional_files_2, *@user.additional_files_3 ].compact %>
+    <% all_images.each_with_index do |image, index| %>
+      <button type="button" data-bs-target="#carouselExampleDark" data-bs-slide-to="<%= index %>" class="<%= 'active' if index == 0 %>" aria-current="<%= 'true' if index == 0 %>" aria-label="Slide <%= index + 1 %>"></button>
+    <% end %>
+  </div>
 
-      <div class="container mt-4">
-      <div class="row">
-        <% all_images = [ @user.avatar, *@user.additional_images, *@user.additional_images_2, *@user.additional_images_3 ].compact %>
-        <% all_images.each_with_index do |image, index| %>
-          <div class="col-sm-3 mb-4">
-            <div class="card h-100">
-              <%= image_tag(image, class: "card-img-top", alt: "Profile image #{index + 1}") %>
-              
-            </div>
-          </div>
-        <% end %>
+  <!-- Carousel Inner -->
+  <div class="carousel-inner">
+    <% all_images.each_with_index do |image, index| %>
+      <div class="carousel-item <%= 'active' if index == 0 %>" data-bs-interval="10000">
+        <%= image_tag(image, class: "img-fluid mx-auto d-block", size: "300", alt: "Image #{index + 1}") %>
+      
       </div>
-    </div>
+    <% end %>
+  </div>
+
+  <!-- Carousel Controls -->
+  <button class="carousel-control-prev" type="button" data-bs-target="#carouselExampleDark" data-bs-slide="prev">
+    <span class="carousel-control-prev-icon" aria-hidden="true"></span>
+    <span class="visually-hidden">Previous</span>
+  </button>
+  <button class="carousel-control-next" type="button" data-bs-target="#carouselExampleDark" data-bs-slide="next">
+    <span class="carousel-control-next-icon" aria-hidden="true"></span>
+    <span class="visually-hidden">Next</span>
+  </button>
+</div>
+
 
       <!-- Bio Card -->
       <% if @user.bio.present? %>

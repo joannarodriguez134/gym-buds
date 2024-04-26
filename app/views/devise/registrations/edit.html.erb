@@ -8,11 +8,13 @@
     <!-- Avatar upload field -->
     <%= f.input :avatar, as: :file, label: "Edit profile picture: ",wrapper_html: { class: 'mb-3' } %>
 
-      <%= f.input :additional_images, as: :file, label: "Add up to 3 more images: ", wrapper_html: { class: 'mb-3' } %>
+    <p class="text-muted">Maximum file size for images and videos: 10 MB</p>
 
-      <%= f.input :additional_images_2, as: :file, label: " .", wrapper_html: { class: 'mb-3' } %>
+      <%= f.input :additional_files, as: :file, label: "Feel free to add more images and videos: ", wrapper_html: { class: 'mb-3' } %>
 
-      <%= f.input :additional_images_3, as: :file, label: " . ", wrapper_html: { class: 'mb-3' } %>
+      <%= f.input :additional_files_2, as: :file, label: " .", wrapper_html: { class: 'mb-3' } %>
+
+      <%= f.input :additional_files_3, as: :file, label: " . ", wrapper_html: { class: 'mb-3' } %>
 
 
 
