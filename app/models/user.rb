@@ -36,6 +36,9 @@ class User < ApplicationRecord
          :recoverable, :rememberable, :validatable
 
   has_one_attached :avatar
+  has_many_attached :additional_images
+  has_many_attached :additional_images_2
+  has_many_attached :additional_images_3
 
   # when user gets deleted so does matches and messages
   has_many :matches, dependent: :destroy
