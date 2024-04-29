@@ -12,7 +12,7 @@
         <div class="d-flex gap-2 w-100 justify-content-between">
           <div>
             <h6 class="mb-0">
-              <%= message.sender == current_user ? "#{message_user.username}" : "From #{message_user.username}" %>
+              <%= message.sender == current_user ? "#{message_user.username}" : "#{message_user.username}" %>
             </h6>
             <p class="mb-0 opacity-75">
               <%= message.body %>
