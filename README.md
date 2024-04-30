@@ -9,6 +9,7 @@ Access the app here: https://gymbuds.co/
 ## Table of Contents
 
 - [Main Features](#main-features)
+- [Demo Video](#demo-video)
 - [Technologies Used](#technologies-used)
 - [Services Used](#services-used)
 - [Installation](#installation)
@@ -22,6 +23,13 @@ Access the app here: https://gymbuds.co/
 **In-App Messaging**: Enables users to communicate with their matches directly within the app to coordinate and plan workouts.
 
 **Profile Customization**: Users can personalize their profiles with details like fitness level, workout preferences, and available times.
+
+## Demo Video
+
+Check out the demo video of how GymBuds works and see it in action:
+
+[Watch the Demo Video](https://player.vimeo.com/video/940901549)
+
 
 ## Technologies Used
 
