@@ -10,6 +10,7 @@ Access the app here: https://gymbuds.co/
 
 - [Main Features](#main-features)
 - [Demo Video](#demo-video)
+- [Entity Relationship Diagram](#entity-relationship-diagram)
 - [Technologies Used](#technologies-used)
 - [Services Used](#services-used)
 - [Installation](#installation)
@@ -30,6 +31,11 @@ Check out the demo video of how GymBuds works and see it in action:
 
 [Watch the Demo Video](https://player.vimeo.com/video/940901549)
 
+## Entity Relationship Diagram
+
+Below is the ERD of our application, illustrating how the various models are interconnected:
+
+![Entity Relationship Diagram](images/erd.png)
 
 ## Technologies Used
 
