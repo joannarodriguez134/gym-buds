@@ -35,7 +35,7 @@ Check out the demo video of how GymBuds works and see it in action:
 
 Below is the ERD of our application, illustrating how the various models are interconnected:
 
-![Entity Relationship Diagram](images/erd.png)
+![Entity Relationship Diagram](app/assets/images/erd.png)
 
 ## Technologies Used
 
