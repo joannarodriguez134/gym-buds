@@ -28,25 +28,21 @@ class Message < ApplicationRecord
   belongs_to :receiver, class_name: "User"
 
   validates :body, presence: true
-
-  # Scopes
   
   scope :for_match, ->(match_id) { where(match_id: match_id) }
   scope :from_user, ->(user_id) { where(sender_id: user_id) }
   scope :to_user, ->(user_id) { where(receiver_id: user_id) }
 
-  # Retrieves messages for a given user that are part of accepted matches
+
   def self.for_user_in_accepted_matches(user_id)
     joins(:match)
-      .where(matches: { status: 'accepted' })
+      .where(matches: { status: "accepted" })
       .where("messages.sender_id = ? OR messages.receiver_id = ?", user_id, user_id)
   end
 
   def self.accepted_between(user1_id, user2_id)
     joins(:match)
-      .where(matches: { status: 'accepted' })
+      .where(matches: { status: "accepted" })
       .where("(messages.sender_id = :user1_id AND messages.receiver_id = :user2_id) OR (messages.sender_id = :user2_id AND messages.receiver_id = :user1_id)", user1_id: user1_id, user2_id: user2_id)
   end
-  
-
 end

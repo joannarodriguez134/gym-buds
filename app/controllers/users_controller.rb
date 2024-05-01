@@ -11,23 +11,19 @@ class UsersController < ApplicationController
   end
 
   def index
-    # Get ids of users where there is an accepted match with the current user
-    accepted_matches_user_ids = Match.where(status: 'accepted').where("requester_id = ? OR approver_id = ?", current_user.id, current_user.id).pluck(:requester_id, :approver_id).flatten.uniq
+    accepted_matches_user_ids = Match.where(status: "accepted").where("requester_id = ? OR approver_id = ?", current_user.id, current_user.id).pluck(:requester_id, :approver_id).flatten.uniq
   
-    # Exclude the current user and users with whom they have an accepted match
     @users = User.where.not(id: [current_user.id, *accepted_matches_user_ids])
   end
 
   def messages
     @user = current_user
     
-    # Find all matches for the current user that are accepted
-    matches = Match.where(status: 'accepted').where("requester_id = :user_id OR approver_id = :user_id", user_id: @user.id)
+    matches = Match.where(status: "accepted").where("requester_id = :user_id OR approver_id = :user_id", user_id: @user.id)
     
-    # For each match, get the most recent message
     @messages = matches.map do |match|
       match.messages.order(updated_at: :desc).first
-    end.compact # compact to remove nil entries if any matches have no messages
+    end.compact 
   end
   
   

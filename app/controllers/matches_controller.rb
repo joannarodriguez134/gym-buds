@@ -25,7 +25,7 @@ class MatchesController < ApplicationController
   # GET /matches/1 or /matches/1.json
   def show
     # only show the accepted matches
-    @matches = Match.where(status: 'accepted').where("requester_id = ? OR approver_id = ?", @user.id, @user.id)
+    @matches = Match.where(status: "accepted").where("requester_id = ? OR approver_id = ?", @user.id, @user.id)
   end
 
   # GET /matches/new
@@ -90,13 +90,12 @@ class MatchesController < ApplicationController
 
   def like
     target_user = User.find_by!(username: params[:username])
-    # The logic for finding or creating the match remains the same.
     existing_match = Match.find_or_initialize_by(requester: current_user, approver: target_user) do |match|
-      match.status = 'pending'
+      match.status = "pending"
     end
     
     if existing_match.persisted? && existing_match.pending?
-      existing_match.update(status: 'accepted')
+      existing_match.update(status: "accepted")
     elsif !existing_match.persisted?
       existing_match.save
     end
@@ -111,7 +110,7 @@ class MatchesController < ApplicationController
                      Match.find_by(requester: target_user, approver: current_user)
   
     if existing_match
-      existing_match.update(status: 'rejected')
+      existing_match.update(status: "rejected")
     end
   
     # Redirect or respond accordingly
