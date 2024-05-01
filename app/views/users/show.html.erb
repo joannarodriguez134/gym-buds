@@ -12,9 +12,13 @@
         </div>
       </div>
 
-      <% all_images = [@user.avatar, *@user.additional_files, *@user.additional_files_2, *@user.additional_files_3].compact %>
+      <% all_images = [] %>
+      <% all_images << @user.avatar if @user.avatar.attached? %>
+      <% @user.additional_files.each { |file| all_images << file if file.attached? } %>
+      <% @user.additional_files_2.each { |file| all_images << file if file.attached? } %>
+      <% @user.additional_files_3.each { |file| all_images << file if file.attached? } %>
 
-      <% if all_images.count <= 0 %>
+      <% if all_images.any? %>
         <div id="carouselExampleDark" class="carousel carousel-dark slide" data-bs-ride="carousel">
           <div class="carousel-indicators">
             <% all_images.each_with_index do |image, index| %>
@@ -43,7 +47,7 @@
           </button>
         </div>
       <% else %>
-       
+
         <div class="text-center">
           <p>No images available.</p>
         </div>
@@ -57,7 +61,7 @@
           </div>
         </div>
       <% end %>
-   
+
       <div class="card mb-3">
         <div class="card-body">
           <h5 class="card-title"><strong>My basics</strong></h5>
