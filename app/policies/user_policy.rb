@@ -6,17 +6,14 @@ class UserPolicy < ApplicationPolicy
     @record = record
   end
 
-  # anyone can view the list of users
   def index?
     true
   end
 
-  # Users can view anyones profile
   def show?
     true
   end
 
-  # users can create an account for themselves
   def new?
     true
   end
@@ -25,7 +22,6 @@ class UserPolicy < ApplicationPolicy
     true
   end
 
-  # Users can update their own profile
   def edit?
     update?
   end
@@ -34,7 +30,6 @@ class UserPolicy < ApplicationPolicy
     user == record
   end
 
-  # Users can delete their own profile
   def destroy?
     user == record
   end
@@ -45,7 +40,6 @@ class UserPolicy < ApplicationPolicy
   end
   
 
-  # Scope class for this policy
   class Scope < Scope
     def resolve
       scope.all

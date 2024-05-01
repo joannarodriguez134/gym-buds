@@ -1,1 +1,1 @@
-require 'pagy'
+require "pagy"

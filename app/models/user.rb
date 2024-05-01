@@ -30,158 +30,79 @@
 #  index_users_on_username              (username) UNIQUE
 #
 class User < ApplicationRecord
-  # Include default devise modules. Others available are:
-  # :confirmable, :lockable, :timeoutable, :trackable and :omniauthable
+  include FileSizeValidator
+  include UserEnumsAndScopes
+  include UserRelationships
+
   devise :database_authenticatable, :registerable,
          :recoverable, :rememberable, :validatable
-
-  has_one_attached :avatar
-  has_one_attached :additional_files
-  has_one_attached :additional_files_2
-  has_one_attached :additional_files_3
-
-  # when user gets deleted so does matches and messages
-  has_many :matches, dependent: :destroy
-
-  has_many :messages, dependent: :destroy
-
-   #  when the user is the one who initiates the match request
-   has_many :requested_matches, class_name: 'Match', foreign_key: 'requester_id', dependent: :destroy
-
-   # when the user is the one who approves the match request
-   has_many :approved_matches, class_name: 'Match', foreign_key: 'approver_id', dependent: :destroy
-
-   has_many :sent_messages, class_name: 'Message', foreign_key: 'sender_id', dependent: :destroy
-
-  has_many :received_messages, class_name: 'Message', foreign_key: 'receiver_id', dependent: :destroy
 
   validates :email, presence: true
   validates :first_name, presence: true
   validates :last_name, presence: true
   validates :dob, presence: true
   validates :username, presence: true
-  validate :validate_file_sizes
 
-  scope :all_except, ->(user) { where.not(id: user) }
-
-  def rejected_matches
-    Match.where("(requester_id = :user_id OR approver_id = :user_id) AND status = :status", user_id: id, status: 'rejected')
+  
+  def gym_name
+    {
+      east_bank_club: "East Bank Club",
+      esporta_fitness: "Esporta Fitness",
+      equinox: "Equinox",
+      la_fitness: "LA Fitness",
+      planet_fitness: "Planet Fitness",
+      fitness_formula_club: "Fitness Formula Club",
+      midtown_athletic_club: "Midtown Athletic Club",
+      orange_theory_fitness: "Orange Theory Fitness",
+    }[self.user_gym.to_sym] || self.user_gym
   end
 
-
-  # Enums
-  enum gender: { male: 'male', female: 'female', nonbinary: 'nonbinary' }
-
-  enum gym_frequency_category: {
-       daily: 'daily',
-       twice_a_week: 'twice_a_week',
-       multiple_times_a_week: 'multiple_times_a_week',
-       weekly: 'weekly',
-       every_two_weeks: 'every_two_weeks',
-       occasionally: 'occasionally',
-       rarely: 'rarely'
-     }
-
-    #  enum ideal_match_gender: { 
-    #   match_gender_male: 'male', 
-    #   match_gender_female: 'female', 
-    #   match_gender_nonbinary: 'nonbinary' 
-    # }
-
-  enum skill_level: { beginner: 'beginner', intermediate: 'intermediate', advanced: 'advanced' }
-
-  enum time_of_day: { mornings: 'mornings', afternoons: 'afternoons', evenings: 'evenings' }
-
-  enum type_of_workouts: {
-       cardio: 'cardio',
-       strength_training: 'strength_training',
-       hiit: 'hiit',
-       crossfit: 'crossfit',
-       yoga: 'yoga',
-       pilates: 'pilates',
-       dance: 'dance',
-       martial_arts: 'martial_arts',
-       spinning: 'spinning',
-       bodybuilding: 'bodybuilding',
-       mixed_modal: 'mixed_modal'
-}
-
-
-  enum user_gym: {
-
-      east_bank_club: 'east_bank_club',
-      esporta_Fitness: 'esporta_fitness', 
-      equinox: 'equinox',
-      la_fitness: 'la_fitness',
-      planet_fitness: 'planet_fitness',
-      fitness_formula_club: 'fitness_formula_club',
-      midtown_athletic_club: 'midtown_athletic_club',
-      orange_theory_fitness: 'orange_theory_fitness' }
-
-      # these method are to have a more readable string in the view rather than 
-      # <%= @user.user_gym %>
-
-      def gym_name
-        {
-          east_bank_club: 'East Bank Club',
-          esporta_fitness: 'Esporta Fitness',
-          equinox: 'Equinox',
-          la_fitness: 'LA Fitness',
-          planet_fitness: 'Planet Fitness',
-          fitness_formula_club: 'Fitness Formula Club',
-          midtown_athletic_club: 'Midtown Athletic Club',
-          orange_theory_fitness: 'Orange Theory Fitness'
-        }[self.user_gym.to_sym] || self.user_gym
-      end
-
-      def self.gym_name_options
-        user_gyms.keys.map do |key|
-          [User.new(user_gym: key).gym_name, key] # Use an instance of User to transform each key to its human-readable form
-        end
-      end
-
-      def user_gym_frequency
-        {
-        daily: 'daily',
-       twice_a_week: 'twice a week',
-       multiple_times_a_week: 'multiple times a week',
-       weekly: 'weekly',
-       every_two_weeks: 'every two weeks',
-       occasionally: 'occasionally',
-       rarely: 'rarely'
-      }[self.gym_frequency_category] || self.gym_frequency_category
-      end
-
-      def self.user_gym_frequency_options
-        gym_frequency_categories.keys.map do |key|
-          [User.new(gym_frequency_category: key).user_gym_frequency, key] # Use an instance of User to transform each key to its human-readable form
-        end
-      end
-
-    def workouts 
-      {
-        cardio: 'cardio',
-        strength_training: 'strength training',
-        hiit: 'hiit',
-        crossfit: 'crossfit',
-        yoga: 'yoga',
-        pilates: 'pilates',
-        dance: 'dance',
-        martial_arts: 'martial arts',
-        spinning: 'spinning',
-        bodybuilding: 'bodybuilding',
-        mixed_modal: 'mixed modal'
-      }[self.type_of_workouts] || self.type_of_workouts
+  def self.gym_name_options
+    user_gyms.keys.map do |key|
+      [User.new(user_gym: key).gym_name, key]
     end
+  end
 
-    def self.workouts_options
-      gym_frequency_categories.keys.map do |key|
-        [User.new(gym_frequency_category: key).user_gym_frequency, key] # Use an instance of User to transform each key to its human-readable form
-      end
+  def user_gym_frequency
+    {
+      daily: "daily",
+      twice_a_week: "twice a week",
+      multiple_times_a_week: "multiple times a week",
+      weekly: "weekly",
+      every_two_weeks: "every two weeks",
+      occasionally: "occasionally",
+      rarely: "rarely",
+    }[self.gym_frequency_category] || self.gym_frequency_category
+  end
+
+  def self.user_gym_frequency_options
+    gym_frequency_categories.keys.map do |key|
+      [User.new(gym_frequency_category: key).user_gym_frequency, key]
     end
+  end
 
+  def workouts
+    {
+      cardio: "cardio",
+      strength_training: "strength training",
+      hiit: "hiit",
+      crossfit: "crossfit",
+      yoga: "yoga",
+      pilates: "pilates",
+      dance: "dance",
+      martial_arts: "martial arts",
+      spinning: "spinning",
+      bodybuilding: "bodybuilding",
+      mixed_modal: "mixed modal",
+    }[self.type_of_workouts] || self.type_of_workouts
+  end
 
-    # Method to calculate age from dob
+  def self.workouts_options
+    gym_frequency_categories.keys.map do |key|
+      [User.new(gym_frequency_category: key).user_gym_frequency, key]
+    end
+  end
+
   def age
     return unless dob
 
@@ -193,17 +114,4 @@ class User < ApplicationRecord
   def full_name
     [first_name, last_name].join(" ")
   end
-
-  def validate_file_sizes
-    max_file_size = 10.megabytes
-
-    all_attachments = [avatar, *additional_files, *additional_files_2, *additional_files_3].compact
-
-    all_attachments.each do |file|
-      if file.attached? && file.blob.byte_size > max_file_size
-        errors.add(:base, "#{file.filename} is too large. Maximum file size allowed is 10 MB.")
-      end
-    end
-  end
-
 end

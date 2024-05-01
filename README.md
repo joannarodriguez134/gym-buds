@@ -1,6 +1,6 @@
 # GymBuds
 
-GymBuds is a web application tailored for gym enthusiasts looking to find and connect with workout partners who share similar fitness interests and schedules. Utilizing a matching algorithm similar to Tinder's, GymBuds offers a user-friendly platform for users to find their ideal gym buddy.
+GymBuds is a web application tailored for gym enthusiasts looking to find and connect with workout partners who share similar fitness interests and schedules. Utilizing a matching algorithm similar to Tinder"s, GymBuds offers a user-friendly platform for users to find their ideal gym buddy.
 
 Access the app here: https://gymbuds.co/
 
@@ -19,7 +19,7 @@ Access the app here: https://gymbuds.co/
 
 ## Main Features
 
-**Match Making Algorithm**: GymBuds' matching algorithm pairs users based on their fitness goals, preferred workout times, and favorite gym locations.
+**Match Making Algorithm**: GymBuds" matching algorithm pairs users based on their fitness goals, preferred workout times, and favorite gym locations.
 
 **In-App Messaging**: Enables users to communicate with their matches directly within the app to coordinate and plan workouts.
 
@@ -70,7 +70,7 @@ Below is the ERD of our application, illustrating how the various models are int
 3. **Ensure the Security of the Master Key**
    Never commit your `master.key` or the credentials file to version control. Add the `master.key` to your `.gitignore` file to prevent it from being accidentally pushed to your repository:
    ```bash
-   echo 'config/master.key' >> .gitignore
+   echo "config/master.key" >> .gitignore
    ```
 
 ### App Setup

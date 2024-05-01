@@ -12,16 +12,16 @@ unless Rails.env.production?
       puts "adding users..."
       names = ["alice", "cameron", "chelsea", "nick", "danny", "sam", "jenny", "bob", "camila", "kim", "mack", "jackie"]
       last_names = ["smith", "jones", "milan", "castillo", "hernandez"]
-      genders = ['male', 'female', 'nonbinary']
-      gym_frequencies = ['daily', 'twice_a_week', 'multiple_times_a_week', 'weekly', 'every_two_weeks', 'occasionally', 'rarely']
-      ideal_match_genders = ['male', 'female', 'nonbinary']
-      skill_levels = ['beginner', 'intermediate', 'advanced']
-      times_of_day = ['mornings', 'afternoons', 'evenings']
-      workout_types = ['cardio', 'strength_training', 'hiit', 'crossfit', 'yoga', 'pilates', 'dance', 'martial_arts', 'spinning', 'bodybuilding', 'mixed_modal']
-      gym_names = ['east_bank_club', 'esporta_fitness', 'equinox', 'la_fitness', 'planet_fitness', 'fitness_formula_club', 'midtown_athletic_club', 'orange_theory_fitness']
+      genders = ["male", "female", "nonbinary"]
+      gym_frequencies = ["daily", "twice_a_week", "multiple_times_a_week", "weekly", "every_two_weeks", "occasionally", "rarely"]
+      ideal_match_genders = ["male", "female", "nonbinary"]
+      skill_levels = ["beginner", "intermediate", "advanced"]
+      times_of_day = ["mornings", "afternoons", "evenings"]
+      workout_types = ["cardio", "strength_training", "hiit", "crossfit", "yoga", "pilates", "dance", "martial_arts", "spinning", "bodybuilding", "mixed_modal"]
+      gym_names = ["east_bank_club", "esporta_fitness", "equinox", "la_fitness", "planet_fitness", "fitness_formula_club", "midtown_athletic_club", "orange_theory_fitness"]
 
       names.each do |name|
-        dob = Faker::Date.between(from: '1997-01-01', to: '2005-12-31') # Random DOB between 1960 and 2005
+        dob = Faker::Date.between(from: "1997-01-01", to: "2005-12-31") # Random DOB between 1960 and 2005
         u = User.create(
           email: "#{name}@example.com", 
           password: "password",
@@ -55,7 +55,7 @@ unless Rails.env.production?
     task add_matches: :environment do
       puts "adding matches"
     
-      statuses = ['pending', 'accepted', 'pending']
+      statuses = ["pending", "accepted", "pending"]
     
       5.times do |_i|
         approver = User.all.sample
@@ -76,7 +76,6 @@ unless Rails.env.production?
       puts "adding messages"
       Match.all.each do |match|
         rand(1..4).times do
-          # Decide who is sender and who is receiver. This ensures they are always different.
           if [true, false].sample
             sender_id = match.requester_id
             receiver_id = match.approver_id
