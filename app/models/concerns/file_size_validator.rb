@@ -1,6 +1,6 @@
 module FileSizeValidator
   extend ActiveSupport::Concern
-
+  # good use of concern
   included do
     validate :validate_file_sizes
   end

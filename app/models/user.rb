@@ -3,6 +3,7 @@
 # Table name: users
 #
 #  id                     :bigint           not null, primary key
+#  admin                  :boolean          default(FALSE), not null
 #  bio                    :text
 #  dob                    :date
 #  email                  :citext           default(""), not null

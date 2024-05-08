@@ -7,20 +7,21 @@ class MatchesController < ApplicationController
 
   # GET /matches or /matches.json
   def index
+    # You could probably do this with User.matches if you set up the relationships
     raw_matches = Match.accepted.where("requester_id = ? OR approver_id = ?", current_user.id, current_user.id)
-    
+
     unique_match_ids = raw_matches.each_with_object(Set.new) do |match, unique_matches|
       pair = [match.requester_id, match.approver_id].sort
       unique_matches.add(pair)
     end
-    
+
     @matches = raw_matches.select do |match|
       match_pair = [match.requester_id, match.approver_id].sort
       unique_match_ids.include?(match_pair)
     end.uniq { |m| [m.requester_id, m.approver_id].sort }
   end
-  
-  
+
+
 
   # GET /matches/1 or /matches/1.json
   def show
@@ -75,7 +76,7 @@ class MatchesController < ApplicationController
     end
   end
 
-  
+
 
   # DELETE /matches/1 or /matches/1.json
   def destroy
@@ -93,29 +94,29 @@ class MatchesController < ApplicationController
     existing_match = Match.find_or_initialize_by(requester: current_user, approver: target_user) do |match|
       match.status = "pending"
     end
-    
+
     if existing_match.persisted? && existing_match.pending?
       existing_match.update(status: "accepted")
     elsif !existing_match.persisted?
       existing_match.save
     end
   end
-   
-  
-  
+
+
+
 
   def reject
     target_user = User.find_by!(username: params[:username])
     existing_match = Match.find_by(requester: current_user, approver: target_user) ||
                      Match.find_by(requester: target_user, approver: current_user)
-  
+
     if existing_match
       existing_match.update(status: "rejected")
     end
-  
+
     # Redirect or respond accordingly
   end
-  
+
 
   private
     def set_match
