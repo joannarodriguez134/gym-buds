@@ -1,8 +1,9 @@
 module UserRelationships
   extend ActiveSupport::Concern
-
+  # probably better to keep this in user.rb
   included do
     has_one_attached :avatar
+    # Naming could be more explicit
     has_one_attached :additional_files
     has_one_attached :additional_files_2
     has_one_attached :additional_files_3

@@ -82,7 +82,7 @@ Below is the ERD of our application, illustrating how the various models are int
    bundle install
    rails db:create
    rails db:migrate
-   rake sample_data 
+   rake dev:sample_data 
    bin/dev
    ```
 
